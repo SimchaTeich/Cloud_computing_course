@@ -20,7 +20,7 @@ First of all, I edited the Security Group and replaced port 3000 with port 3001.
 
 Next, I set up the API for the HTTP server on port 3001. Its job now is to list what the internal API is in a nice way for the user. The code can be found in the [myWebServer](./myWebServer/) folder
 
-To run the web server, first you need to make sure that [myAPI/index.js](./myAPI/index.js) is also running (this is exactly the same version of code from [Task 1](../Task1/)). After that, enter the folder where the web server is located, take care of the dependencies and run it with the following commands:
+To run the web server, first you need to make sure that [./myAPI/index.js](./myAPI/index.js) is also running (this is exactly the same version of code from [Task 1](../Task1/)). After that, enter the folder where the web server is located, take care of the dependencies and run it with the following commands:
 
 ```
 npm i express
