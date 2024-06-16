@@ -24,7 +24,7 @@
        * Headers<br />
       `Content-Type: application/json`
        * Body
-            ```json
+            ```javascript
             ['BigBuckBunny', 'ElephantsDream',
             'ForBiggerBlazes','ForBiggerEscapes', ....,
             'TearsOfSteel']
