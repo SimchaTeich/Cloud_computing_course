@@ -14,3 +14,22 @@ present a list of videos based on the files inside the bucket.
 ![](img/00%20-%20instruction's%20illustration.png)
 
 ## Implementation
+First of all, I edited the Security Group and replaced port 3000 with port 3001. The reason for hiding 3000 is because it will be an internal self-using API, while the application itself will (now) run on port 3001.
+
+![](img/01%20-%20the%20edited%20security%20group.png)
+
+Next, I set up the API for the HTTP server on port 3001. Its job now is to list what the internal API is in a nice way for the user. The code can be found in the [myWebServer](./myWebServer/) folder
+
+To run the web server, first you need to make sure that [myAPI/index.js](./myAPI/index.js) is also running (this is exactly the same version of code from [Task 1](../Task1/)). After that, enter the folder where the web server is located, take care of the dependencies and run it with the following commands:
+
+```
+npm i express
+```
+```
+node index.js
+```
+
+## Results
+The result can be seen when browsing the address http://ec2-ip:3001 in the following image:
+
+![](img/02%20-%20final%20result%20for%20Task%202.png)
