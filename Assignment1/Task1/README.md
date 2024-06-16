@@ -40,4 +40,27 @@ First thing, I created the bucket for the mp4 files and uploaded them. My bucket
 
 ![](./00%20-%20my%20first%20bucket.png)
 
-Next, for the API I created a machine with an EC2 service. I called her Workspace
+Next, for the API, I created a machine with an EC2 service. I called it "Workspace"
+
+![](./01%20-%20my%20first%20EC2%20instance.png)
+![](./02%20-%20important%20details%20about%20my%20first%20ec2.png)
+![](./03%20-%20important%20details%20about%20my%20first%20ec2.png)
+![](./04%20-%20important%20details%20about%20my%20first%20ec2.png)
+
+Then I connected with SSH to the machine (in the VSC IDE) and wrote the requested API. It can be found in the [myAPI](./myAPI/) folder.
+
+To run index.js, run the following commands in the folder where it is located on the server:
+
+```
+npm i @aws-sdk/client-s3
+```
+```
+npm i express 
+```
+```
+node index.js
+```
+
+The result can be seen when browsing the address http://ec2-ip:3000/videoList in the following image:
+
+![](./05%20-%20The%20API%20result.png)
