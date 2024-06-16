@@ -47,7 +47,21 @@ Next, for the API, I created a machine with an EC2 service. I called it "Workspa
 ![](img/03%20-%20important%20details%20about%20my%20first%20ec2.png)
 ![](img/04%20-%20important%20details%20about%20my%20first%20ec2.png)
 
-Then I connected with SSH to the machine (in the VSC IDE) and wrote the requested API. It can be found in the [myAPI](./myAPI/) folder.
+Then I connected with SSH to the machine (in the VSC IDE), I installed node with the following commands:
+
+```bash
+# Update the instance
+yum update -y
+
+# Install Node.js (using Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+nvm install node
+```
+
+Then, I wrote the requested API. It can be found in the [myAPI](./myAPI/) folder.
 
 To run index.js, run the following commands in the folder where it is located on the server:
 
