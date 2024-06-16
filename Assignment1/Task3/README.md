@@ -8,7 +8,7 @@ By the end of this task, you should be able to click on a file name and have it 
 
 You should be able to execute this task by extending both the existing Express backend API and your HTML app.
 
-Ensure that your workspace EC2 instance has the LabRole. This will provide the instance with full S3 access.
+Ensure that your workspace EC2 instance has the ***LabRole***. This will provide the instance with full S3 access.
 
 ![](img/00%20-%20instruction's%20illustration.png)
 
