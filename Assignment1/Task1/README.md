@@ -1,5 +1,7 @@
 # Task 1
 1st Task - Build the first backend API for your application
+
+## Instructions
 * Create an S3 Bucket for video storage in your account
 * Upload some sample videos to the bucket
   * for the simplicity of the application, we will support mp4 files only
@@ -32,3 +34,10 @@
 
  This task will create our first API for our new Media player service. In the next task, we
  will consider how to integrate this service with our app.
+
+ ## Implementation
+First thing, I created the bucket for the mp4 files and uploaded them. My bucket is called "mymp4bucket"
+
+![](./00%20-%20my%20first%20bucket.png)
+
+Next, for the API I created a machine with an EC2 service. I called her Workspace
