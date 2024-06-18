@@ -20,8 +20,9 @@ Content:
 * [Deployment backend bucket](#deployment-backend-bucket)
 * [VPC](#vpc)
 * [Target Group](#target-group)
-* [Security Group](#security-group)
+* [Security Groups](#security-groups)
 * [Load Balancer](#load-balancer)
+* [Auto Scaling](#auto-scailing)
 
 ### Deployment backend bucket
 ---
@@ -53,7 +54,7 @@ In addition, I created a target group called **UTube-backend-tg**
 * health check turns to **/videoList** which returns the list of existing movie names.
 
 
-### Security Group
+### Security Groups
 ---
 After that, I created 2 definitions for security groups.
 
