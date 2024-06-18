@@ -135,6 +135,16 @@ And only after that, I created the auto scaling called **UTube-asg-for-backend**
 ![](./img/22%20-%20asg%20for%20backend.png)
 ![](./img/23%20-%20asg%20for%20backend.png)
 
+### Web Server Bucket
+---
+Then I took the [html file](./web_client_on_bucket/index.html), and updated it with the addresses to which it fetches, to be the address of the load-balancer http://utube-lb-1300840202.us-east-1.elb.amazonaws.com/.
+
+After that, I created a new public bucket named **simcha-assignment1-web-server** and uploaded the html file into it as a static web server.
+
+
+
+
+
 ## Results
 ![](./img/24%20-%20results.png)
 ![](./img/25%20-%20results.png)
