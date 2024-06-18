@@ -16,6 +16,8 @@ Use your knowledge from the class about Auto Scaling for EC2 and Load balancing 
 ***we use a max of 3 instances due to the limitation on the Lab for concurrent instance running at the same time.***
 
 ## Implementation
+### Deployment bucket
+![](./img/13%20-%20the%20deployment%20bucket.png)
 
 ### VPC
 
