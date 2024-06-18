@@ -1,3 +1,50 @@
+# Task 4
+4th Task- Deploy the backend for scale
+
+## Instructions
+Now this is the time to get your backend code from your workspace and package it as an artifact for deployment, for express, you need:
+* package.json
+* package-lock.json
+* server.js
+
+**and** any other source code file and additional files that you wrote, including code folder, etc
+
+Package all of them as zip files, and upload them to the deployment Bucket in s3 (create your own deployment bucket, separated from the movie bucket)
+
+Use your knowledge from the class about Auto Scaling for EC2 and Load balancing to deploy that app with a scale of up to 3 instances if needed.
+
+***we use a max of 3 instances due to the limitation on the Lab for concurrent instance running at the same time.***
+
+## Implementation
+
+### VPC
+
+![](./img/00%20-%20vpc.png)
+
+### Target Group
+![](./img/01%20-%20target%20group.png)
+* vpc is **UTube-vpc**
+
+### Security Group
+For the ec2 instances:
+![](./img/02%20-%20security%20group.png)
+* vpc is **UTube-vpc**
+
+For the load balancer later:
+![](./img/05%20-%20security%20group%20for%20load%20balancer.png)
+* vpc is **UTube-vpc**
+
+
+### Load Balancer
+![](./img/03%20-%20load%20balancer.png)
+* vpc is **UTube-vpc**
+
+![](./img/04%20-%20load%20balancer%20more%20details.png)
+* security group is **UTube-sg-for-lb**
+
+
+### Auto Scailing
+create launch-template named **UTube-lt** with the folowing user data:
 ```bash
 #!/bin/bash
 
@@ -43,3 +90,17 @@ node ./myAPI/index.js &
 # start the web server in port 3001
 node ./myWebServer/index.js &
 ```
+![](./img/06%20-%20launch%20template.png)
+
+Then, create the auto scailing:
+![](./img/07%20-%20auto%20scaling.png)
+![](./img/08%20-%20auto%20scaling%20more%20details.png)
+![](./img/09%20-%20auto%20scaling%20more%20details.png)
+
+## Results
+
+![](./img/10%20-%20load%20balancer%20after%20auto%20scaling.png)
+
+![](./img/11%20-%20new%20instances%20made%20by%20auto%20scaling.png)
+
+![](./img/12%20-%20site%20with%20load%20balancer%20url.png)
