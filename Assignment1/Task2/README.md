@@ -14,13 +14,17 @@ present a list of videos based on the files inside the bucket.
 ![](img/00%20-%20instruction's%20illustration.png)
 
 ## Implementation
-First of all, I edited the Security Group and replaced port 3000 with port 3001. The reason for hiding 3000 is because it will be an internal self-using API, while the application itself will (now) run on port 3001.
+First of all, I edited the Security Group.
 
 ![](img/01%20-%20the%20edited%20security%20group.png)
 
-Next, I set up the API for the HTTP server on port 3001. Its job now is to list what the internal API is in a nice way for the user. The code can be found in the [myWebServer](./myWebServer/) folder
+Next, I set up the API for the HTTP server on port 3001. You can find it in [myWebServer](./myWebServer/) folder
 
-To run the web server, first you need to make sure that [./myAPI/index.js](./myAPI/index.js) is also running (this is exactly the same version of code from [Task 1](../Task1/)). After that, enter the folder where the web server is located, take care of the dependencies and run it with the following commands:
+Then, I create the [index.html](./myWebServer/index.html) file. Also in [myWebServer](./myWebServer/) folder.
+
+When I tried to browse the site, I ran into a CORS problem. And so I also fix it in [./myAPI/index.js](./myAPI/index.js).
+
+To run the web server, first you need to make sure that [./myAPI/index.js](./myAPI/index.js) is also running. After that, enter the [myWebServer](./myWebServer/) folder where the web server is located, take care of the dependencies and run it with the following commands:
 
 ```
 npm i express
