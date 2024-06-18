@@ -141,11 +141,19 @@ Then I took the [html file](./web_client_on_bucket/index.html), and updated it w
 
 After that, I created a new public bucket named **simcha-assignment1-web-server** and uploaded the html file into it as a static web server.
 
-
-
+![](./img/27%20-%20web%20server%20bucket.png)
+![](./img/28%20-%20web%20server%20bucket.png)
+![](./img/29%20-%20web%20server%20bucket.png)
 
 
 ## Results
+
+Result of scaling group:
 ![](./img/24%20-%20results.png)
 ![](./img/25%20-%20results.png)
+
+Result of load balancer
 ![](./img/26%20-%20results.png)
+
+Result of web server bucket http://simcha-assignment1-web-server.s3-website-us-east-1.amazonaws.com/ :
+![](./img/30%20-%20results.png)
