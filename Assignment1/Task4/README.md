@@ -16,37 +16,76 @@ Use your knowledge from the class about Auto Scaling for EC2 and Load balancing 
 ***we use a max of 3 instances due to the limitation on the Lab for concurrent instance running at the same time.***
 
 ## Implementation
-### Deployment bucket
-![](./img/13%20-%20the%20deployment%20bucket.png)
+Content:
+* [Deployment backend bucket](#deployment-backend-bucket)
+* [VPC](#vpc)
+* [Target Group](#target-group)
+* [Security Group](#security-group)
+* [Load Balancer](#load-balancer)
+
+### Deployment backend bucket
+---
+First, I taked the API that addresses S3 and turn it into a zip called [package.zip](./backend_deployment/package.zip). This is the same code in the [myAPI folder](../Task3/myAPI/) from the previous task.
+
+Then, I created a private bucket called **simcha-assignment1-backend-deployment**. Then I put the zip in the bucket.
+
+![](./img/00%20-%20backend%20deployment%20bucket.png)
+![](./img/01%20-%20backend%20deployment%20bucket.png)
+
 
 ### VPC
+---
+Second, I created a VPC named **UTube-vpc**.
 
-![](./img/00%20-%20vpc.png)
+![](./img/02%20-%20vpc.png)
+![](./img/03%20-%20vpc.png)
+
 
 ### Target Group
-![](./img/01%20-%20target%20group.png)
+---
+In addition, I created a target group called **UTube-backend-tg**
+
+![](./img/04%20-%20target%20group.png)
+* backend port is 3000
 * vpc is **UTube-vpc**
+
+![](./img/05%20-%20target%20group.png)
+* health check turns to **/videoList** which returns the list of existing movie names.
+
 
 ### Security Group
-For the ec2 instances:
-![](./img/02%20-%20security%20group.png)
+---
+After that, I created 2 definitions for security groups.
+
+The first one called **UTube-sg-for-backend**
+![](./img/06%20-%20backend%20sg.png)
 * vpc is **UTube-vpc**
 
-For the load balancer later:
-![](./img/05%20-%20security%20group%20for%20load%20balancer.png)
+* ![](./img/07%20-%20backend%20sg.png)
+* ![](./img/08%20-%20backend%20sg.png)
+
+The second one called **UTube-sg-for-balancer**
+![](./img/09%20-%20load%20balancer%20sg.png)
 * vpc is **UTube-vpc**
+
+* ![](./img/10%20-%20load%20balancer%20sg.png)
+* ![](./img/11%20-%20load%20balancer%20sg.png)
 
 
 ### Load Balancer
-![](./img/03%20-%20load%20balancer.png)
-* vpc is **UTube-vpc**
-
-![](./img/04%20-%20load%20balancer%20more%20details.png)
-* security group is **UTube-sg-for-lb**
+---
+Now, I could go to create the load balancer, named **UTube-lb**
+![](./img/12%20-%20load%20balancer.png)
+![](./img/13%20-%20load%20balancer.png)
+![](./img/14%20-%20load%20balancer.png)
+![](./img/15%20-%20load%20balancer.png)
+![](./img/16%20-%20load%20balancer.png)
+![](./img/17%20-%20load%20balancer.png)
 
 
 ### Auto Scailing
-create launch-template named **UTube-lt** with the folowing user data:
+---
+Before I created auto scaling, I first created a launch template called **UTube-lt-for-backend** with the folowing user data:
 ```bash
 #!/bin/bash
 
@@ -63,9 +102,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm install node
 
-# Replace '<your-bucket-name>' with your actual S3 bucket name
-# and 'your-package-path' with the path to your package.zip in S3
-aws s3 cp s3://simcha-deployment-bucket/package.zip /home/ec2-user/package.zip
+# download backend zip from the s3
+aws s3 cp s3://simcha-assignment1-backend-deployment/package.zip /home/ec2-user/package.zip
 sudo chown ec2-user:ec2-user /home/ec2-user/package.zip
 
 # Unzip the package
@@ -76,33 +114,27 @@ unzip /home/ec2-user/package.zip -d /home/ec2-user/app
 # Change directory to where the app was unzipped
 cd /home/ec2-user/app
 
-# Install NPM packages in myAPI
-cd ./myAPI
+# Install NPM packages
 npm install
-cd ..
 
-# Install NPM packages in myWebServer
-cd ./myWebServer
-npm install
-cd ..
-
-# starts the API in port 3000
-node ./myAPI/index.js &
-
-# start the web server in port 3001
-node ./myWebServer/index.js &
+# starts backend API
+node index.js
 ```
-![](./img/06%20-%20launch%20template.png)
+![](./img/18%20-%20launch%20template.png)
+* sg is **UTube-sg-for-backend**
 
-Then, create the auto scailing:
-![](./img/07%20-%20auto%20scaling.png)
-![](./img/08%20-%20auto%20scaling%20more%20details.png)
-![](./img/09%20-%20auto%20scaling%20more%20details.png)
+![](./img/19%20-%20launch%20template.png)
+
+And only after that, I created the auto scaling called **UTube-asg-for-backend**:
+![](./img/20%20-%20asg%20for%20backend.png)
+![](./img/21%20-%20asg%20for%20backend.png)
+* vpc is **UTube-vpc**
+* subnets are private.
+
+![](./img/22%20-%20asg%20for%20backend.png)
+![](./img/23%20-%20asg%20for%20backend.png)
 
 ## Results
-
-![](./img/10%20-%20load%20balancer%20after%20auto%20scaling.png)
-
-![](./img/11%20-%20new%20instances%20made%20by%20auto%20scaling.png)
-
-![](./img/12%20-%20site%20with%20load%20balancer%20url.png)
+![](./img/24%20-%20results.png)
+![](./img/25%20-%20results.png)
+![](./img/26%20-%20results.png)
