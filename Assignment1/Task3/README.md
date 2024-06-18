@@ -24,14 +24,9 @@ npm i @aws-sdk/s3-request-presigner
 node index.js
 ```
 
-Secondly, we will have to edit the web server that knows how to handle loading a video.<br />
-The process will go like this:
-* When you enter a page on the website, a list of videos is loaded
-* When clicking on the name of a video, a GET HTTP request will be sent to the web server.
-* The web server (on port 3001, of course) receives the request and turns to the API on port 3000, which returns a **pre-sign link**
-* The server loads a new page with the list of videos and next to them loads the video from the **pre-sign link**.
+Secondly, we will have to edit the html page that knows how to handle loading a video.
 
-The following changes can be found in the [./myWebServer/index.js](./myWebServer/index.js) file. Since no new dependency was added, it is now possible (through the appropriate path..) to run the server again:
+The following changes can be found in the [./myWebServer/index.html](./myWebServer/index.html) file. Since no new dependency was added, it is now possible (through the appropriate path..) to run the server again:
 
 ```
 node index.js

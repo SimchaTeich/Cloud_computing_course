@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTube</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        #videoTable {
+            width: 40%;
+            border-collapse: collapse;
+        }
+        #videoTable th, #videoTable td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            cursor: pointer;
+        }
+        #videoTable th {
+            background-color: #f2f2f2;
+        }
+        #videoPlayerContainer {
+            width: 60%;
+            margin-left: 20px;
+        }
+        #videoPlayer {
+            width: 100%;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>UTube</h1>
+    </header>
+
+    <div class="container">
+        <table id="videoTable">
+            <thead>
+                <tr>
+                    <th>Video List</th>
+                </tr>
+            </thead>
+            <tbody id="videoList">
+                <!-- Dynamic content will be inserted here -->
+            </tbody>
+        </table>
+
+        <div id="videoPlayerContainer">
+            <video controls id="videoPlayer">
+                <!-- Video player will be dynamically loaded here -->
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch video link and load video
+        async function loadVideo(videoName) {
+            try {
+                const response = await fetch(`http://54.160.86.192:3000/videoLink?video_name=${videoName}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch video link');
+                }
+                const data = await response.text(); // Expecting plain text URL
+                const videoPlayer = document.getElementById('videoPlayer');
+                videoPlayer.innerHTML = `<source src="${data}" type="video/mp4">`;
+                videoPlayer.load();
+                videoPlayer.play();
+            } catch (error) {
+                console.error('Error fetching video link:', error);
+                alert('Error fetching video link. See console for details.');
+            }
+        }
+
+        // Function to populate the table with video names
+        function populateVideoList(videoNames) {
+            const videoList = document.getElementById('videoList');
+            videoNames.forEach(video => {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.textContent = video;
+                cell.addEventListener('click', () => loadVideo(video));
+                row.appendChild(cell);
+                videoList.appendChild(row);
+            });
+        }
+
+        // Fetch data from the API for video names
+        fetch('http://54.160.86.192:3000/videoList')
+            .then(response => response.json())
+            .then(data => {
+                populateVideoList(data);
+            })
+            .catch(error => {
+                console.error('Error fetching video list:', error);
+                alert('Error fetching video list. See console for details.');
+            });
+    </script>
+</body>
+</html>
