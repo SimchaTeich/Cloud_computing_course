@@ -23,6 +23,7 @@ Content:
 * [Security Groups](#security-groups)
 * [Load Balancer](#load-balancer)
 * [Auto Scaling](#auto-scailing)
+* [Deployment Web Client Bucket](#deployment-web-client-bucket)
 
 ### Deployment backend bucket
 ---
@@ -135,7 +136,7 @@ And only after that, I created the auto scaling called **UTube-asg-for-backend**
 ![](./img/22%20-%20asg%20for%20backend.png)
 ![](./img/23%20-%20asg%20for%20backend.png)
 
-### Web Server Bucket
+### Deployment Web Client Bucket
 ---
 Then I took the [html file](./web_client_on_bucket/index.html), and updated it with the addresses to which it fetches, to be the address of the load-balancer http://utube-lb-1300840202.us-east-1.elb.amazonaws.com/.
 
