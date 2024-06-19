@@ -1,6 +1,7 @@
 # Task 5
 5th Task - Using CDN for Media File Efficient Distribution
 
+## Instructions
 Amazon S3 is a highly scalable and reliable storage solution, but it can become problematic for high through put distribution in a single region due to several reasons.
 
 One key issue is the inherent latency in accessing data over the internet, which can impact performance when dealing with a large number of requests. Additionally, S3's pricing model, which includes charges for data transfer and the number of requests, can become cost-prohibitive at high through put levels.
