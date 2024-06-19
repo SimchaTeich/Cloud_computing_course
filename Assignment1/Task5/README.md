@@ -43,5 +43,4 @@ So I uploaded the public key to CloufFront:
 Then I changed the code in the backend, you can find it in [./myAPI](./myAPI/). Then I created the new backend deployment. (Replacing the existing zip in the bucket `simcha-assignment1-backend-deployment` with the zip inside [./backend_deployment](./backend_deployment) folder)
 
 ## Results
-
 ![](./img/05%20-%20results.png)
