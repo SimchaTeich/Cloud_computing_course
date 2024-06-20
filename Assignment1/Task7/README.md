@@ -35,7 +35,6 @@ The consule printing give us the next outputs:
 ...
 Response status: 200, Time Taken: 105 ms
 Response status: 200, Time Taken: 105 ms
-...
 Response status: 200, Time Taken: 107 ms
 Response status: 200, Time Taken: 106 ms
 Response status: 200, Time Taken: 105 ms
@@ -43,14 +42,12 @@ Response status: 200, Time Taken: 133 ms
 Response status: 200, Time Taken: 110 ms
 Response status: 200, Time Taken: 105 ms
 Response status: 200, Time Taken: 110 ms
-...
 Response status: 200, Time Taken: 112 ms
 Response status: 200, Time Taken: 123 ms
 Response status: 200, Time Taken: 105 ms
 Response status: 200, Time Taken: 116 ms
 Response status: 200, Time Taken: 103 ms
 Response status: 200, Time Taken: 115 ms
-Response status: 200, Time Taken: 107 ms
 ...
 ```
 
@@ -63,3 +60,29 @@ After several tests and experiments, I discovered that sending requests at the s
 
 After that, to try to improve performance, I added cashing to express in the backend. You can see the changes in the [myAPI](./myAPI/) folder. Then I packed the backend again into [package.zip](./backend_deployment/package.zip) and updated the s3 bucket `simcha-assignment1-backend-deployment`.
 
+After I made sure that the machines were updated, and they were running the new version (with chasing), I went to git codespace again to run the test.
+
+This is the results:
+```
+...
+Response status: 200, Time Taken: 101 ms
+Response status: 200, Time Taken: 120 ms
+Response status: 200, Time Taken: 100 ms
+Response status: 200, Time Taken: 105 ms
+Response status: 200, Time Taken: 100 ms
+Response status: 200, Time Taken: 98 ms
+Response status: 200, Time Taken: 97 ms
+Response status: 200, Time Taken: 101 ms
+Response status: 200, Time Taken: 98 ms
+Response status: 200, Time Taken: 103 ms
+Response status: 200, Time Taken: 99 ms
+Response status: 200, Time Taken: 102 ms
+Response status: 200, Time Taken: 96 ms
+Response status: 200, Time Taken: 100 ms
+Response status: 200, Time Taken: 98 ms
+...
+```
+
+Indeed, **the improvement can be seen:**
+* Without cashing, there was not even one packet that returned in less than 100 ms.
+* Now, there are many of them. (Of course, here I brought a representative sample and not the thousands of prints, which actually show the same thing)
