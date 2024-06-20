@@ -61,5 +61,5 @@ About 20 minutes after the end of the test, the auto scaling starts killing mach
 
 After several tests and experiments, I discovered that sending requests at the same time is the one that causes the number of machines to increase, and not sending messages serially. And this because at any given moment there are fewer requests on the machine in a serial format, as opposed to simultaneous sending.
 
-After that, to try to improve performance, I added cashing to express in the backend. You can see the changes in the [myAPI](./myAPI/) folder. Then I packed the backend again into [package.zip](./backend_deployment/package.zip) and updated the s3 bucket named `simcha-Assignment1-deployment-bucket`.
+After that, to try to improve performance, I added cashing to express in the backend. You can see the changes in the [myAPI](./myAPI/) folder. Then I packed the backend again into [package.zip](./backend_deployment/package.zip) and updated the s3 bucket `simcha-assignment1-backend-deployment`.
 
