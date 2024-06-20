@@ -86,3 +86,7 @@ Response status: 200, Time Taken: 98 ms
 Indeed, **the improvement can be seen:**
 * Without cashing, there was not even one packet that returned in less than 100 ms.
 * Now, there are many of them. (Of course, here I brought a representative sample and not the thousands of prints, which actually show the same thing)
+
+And finally, I wanted to check the limitations. But since the machines are of the large type, and there is cash, and the auto scalling works great, I was not able to reach the limit of the number of requests that can be handled. And I was already afraid that the money for the lab would run out due to many requests, so I stopped.
+
+![](./img/05%20-%20load%20balancer%20SLA.png)
