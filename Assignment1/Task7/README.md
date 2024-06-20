@@ -20,7 +20,7 @@ First of all, I changed the settings of the auto scaling group Machine songs acc
 
 ![](./img/00%20-%20change%20auto%20scale%20settings.png)
 
-After that I created [loadTest.js](./LoadTest/loadTest.js) which will make many requests in parallel with the load balancer.
+After that I created [loadTest.js](./LoadTest/loadTest.js) which will make many requests in parallel with the load balancer. The test should run from my computer or from github codespace and not from the machines in Amazon's lab, because it is important that the test reflect browsing from the world, and not necessarily from that region.
 
 This is what the load balancer looks like before running the test:
 
@@ -33,23 +33,24 @@ This is what the load balancer looks like during the test run:
 The consule printing give us the next outputs:
 ```
 ...
-Response status: 200, Time Taken: 21 ms
-Response status: 200, Time Taken: 19 ms
-Response status: 200, Time Taken: 22 ms
-Response status: 200, Time Taken: 20 ms
-Response status: 200, Time Taken: 22 ms
-Response status: 200, Time Taken: 19 ms
-Response status: 200, Time Taken: 19 ms
-Response status: 200, Time Taken: 22 ms
-....
-Response status: 200, Time Taken: 28 ms
-Response status: 200, Time Taken: 27 ms
-Response status: 200, Time Taken: 26 ms
-Response status: 200, Time Taken: 31 ms
-Response status: 200, Time Taken: 19 ms
-Response status: 200, Time Taken: 66 ms
-Response status: 200, Time Taken: 31 ms
-Response status: 200, Time Taken: 28 ms
+Response status: 200, Time Taken: 105 ms
+Response status: 200, Time Taken: 105 ms
+...
+Response status: 200, Time Taken: 107 ms
+Response status: 200, Time Taken: 106 ms
+Response status: 200, Time Taken: 105 ms
+Response status: 200, Time Taken: 133 ms
+Response status: 200, Time Taken: 110 ms
+Response status: 200, Time Taken: 105 ms
+Response status: 200, Time Taken: 110 ms
+...
+Response status: 200, Time Taken: 112 ms
+Response status: 200, Time Taken: 123 ms
+Response status: 200, Time Taken: 105 ms
+Response status: 200, Time Taken: 116 ms
+Response status: 200, Time Taken: 103 ms
+Response status: 200, Time Taken: 115 ms
+Response status: 200, Time Taken: 107 ms
 ...
 ```
 
@@ -57,4 +58,8 @@ About 20 minutes after the end of the test, the auto scaling starts killing mach
 
 ![](./img/03%20-%20load%20balancr%20map%20while%20after%20end%20load%20test.png)
 ![](./img/04%20-%20load%20balancr%20map%20while%20after%20end%20load%20test.png)
+
+After several tests and experiments, I discovered that sending requests at the same time is the one that causes the number of machines to increase, and not sending messages serially. And this because at any given moment there are fewer requests on the machine in a serial format, as opposed to simultaneous sending.
+
+After that, to try to improve performance, I added cashing to express in the backend. You can see the changes in the [myAPI](./myAPI/) folder. Then I packed the backend again into [package.zip](./backend_deployment/package.zip) and updated the s3 bucket named `simcha-Assignment1-deployment-bucket`.
 
