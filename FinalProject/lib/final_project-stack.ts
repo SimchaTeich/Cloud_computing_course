@@ -9,14 +9,14 @@ export class FinalProjectStack extends cdk.Stack {
 
     const labRole = iam.Role.fromRoleArn(this, 'Role', "arn:aws:iam::160844318631:role/LabRole", {mutable: false});
 
-    const table = new cdk.aws_dynamodb.Table(this, 'Hits', {
-      partitionKey: {name: 'path', type: cdk.aws_dynamodb.AttributeType.STRING}
+    const table = new cdk.aws_dynamodb.Table(this, 'users', {
+      partitionKey: {name: 'email', type: cdk.aws_dynamodb.AttributeType.STRING}
     });
 
-    const lambda = new cdk.aws_lambda.Function(this, 'HitCounterHandler', {
+    const lambda = new cdk.aws_lambda.Function(this, 'UserRegisterHandler', {
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'hitcounter.handler',
-      code: cdk.aws_lambda.Code.fromAsset('lambdas\\hitCounter_lambda'),
+      handler: 'register.handler',
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\userRegister_lambda'),
       environment: {
         HITS_TABLE_NAME: table.tableName
       },
@@ -24,9 +24,9 @@ export class FinalProjectStack extends cdk.Stack {
     });
 
 
-    const api = new cdk.aws_apigateway.RestApi(this, 'Endpoint', {
-      restApiName: 'Endpoint',
-      description: 'https://aws.plainenglish.io/deploying-a-lambda-backed-rest-api-using-aws-cdk-a-detailed-guide-a32d163b5e69',
+    const user_system_api = new cdk.aws_apigateway.RestApi(this, 'UserSystemAPI', {
+      restApiName: 'UserSystemAPI',
+      description: 'User System API for login and register users',
       defaultCorsPreflightOptions: {
         allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
         allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS
@@ -34,8 +34,8 @@ export class FinalProjectStack extends cdk.Stack {
     });
 
     // add lambdas to the api gateway
-    const hello = api.root.addResource('hit');
-    hello.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(lambda));
+    const register = user_system_api.root.addResource('register');
+    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(lambda));
 
     // // add s3 bucket proxy to the api gateway
     // const bucket = new s3.Bucket(this, 'HelloBucket', {
