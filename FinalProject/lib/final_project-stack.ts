@@ -9,57 +9,33 @@ export class FinalProjectStack extends cdk.Stack {
 
     const labRole = iam.Role.fromRoleArn(this, 'Role', "arn:aws:iam::160844318631:role/LabRole", {mutable: false});
 
-    const lambda = new cdk.aws_lambda.Function(this, 'HelloHandler', {
+    const table = new cdk.aws_dynamodb.Table(this, 'Hits', {
+      partitionKey: {name: 'path', type: cdk.aws_dynamodb.AttributeType.STRING}
+    });
+
+    const lambda = new cdk.aws_lambda.Function(this, 'HitCounterHandler', {
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'hello.handler',
-      code: cdk.aws_lambda.Code.fromAsset('lambda'),
+      handler: 'hitcounter.handler',
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\hitCounter_lambda'),
+      environment: {
+        HITS_TABLE_NAME: table.tableName
+      },
       role: labRole, // important for the lab so the cdk will not create a new role
     });
 
-    // // const anotherLambda = new cdk.aws_lambda.Function(this, 'AnotherHandler', {
-    //   runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-    //   handler: 'another.handler',
-    //   code: cdk.aws_lambda.Code.fromAsset('another-lambda'),
-    //   role: labRole, // important for the lab so the cdk will not create a new role
-    // });
 
-    // add lambdas to the api gateway
-    const api = new cdk.aws_apigateway.RestApi(this, 'HelloApi', {
-      restApiName: 'HelloApi',
-      description: 'This is a simple api',
+    const api = new cdk.aws_apigateway.RestApi(this, 'Endpoint', {
+      restApiName: 'Endpoint',
+      description: 'https://aws.plainenglish.io/deploying-a-lambda-backed-rest-api-using-aws-cdk-a-detailed-guide-a32d163b5e69',
       defaultCorsPreflightOptions: {
         allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
         allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS
       }
     });
 
-
-    // curl https://jzsckrka64.execute-api.us-east-1.amazonaws.com/prod/hello
-    const hello = api.root.addResource('hello');
+    // add lambdas to the api gateway
+    const hello = api.root.addResource('hit');
     hello.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(lambda));
-
-    // //  curl -H "x-api-key: NibtbdRooO9YQCU16OuS69qPGKPckcrY7B94UM9K" https://jzsckrka64.execute-api.us-east-1.amazonaws.com/prod/another
-    // const another = api.root.addResource('another');
-    // another.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(anotherLambda), {
-    //   apiKeyRequired: true 
-    // });
-
-    // add usage plan to api gateway
-    // const plan = api.addUsagePlan('UsagePlan', {
-    //   quota: {
-    //     limit: 10000,
-    //     period: cdk.aws_apigateway.Period.DAY
-    //   }
-    // });
-
-    // add api key to usage plan
-    // const apiKey = new cdk.aws_apigateway.ApiKey(this
-    //   , 'ApiKey');
-    // plan.addApiKey(apiKey);
-
-    // plan.addApiStage({
-    //   stage: api.deploymentStage
-    // });
 
     // // add s3 bucket proxy to the api gateway
     // const bucket = new s3.Bucket(this, 'HelloBucket', {
