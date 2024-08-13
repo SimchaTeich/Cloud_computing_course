@@ -73,7 +73,7 @@ export class FinalProjectStack extends cdk.Stack {
     const userDetails = user_system_api.root.addResource('userDetails');
     userDetails.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserLambda));
     const deleteUser = user_system_api.root.addResource('deleteUser');
-    deleteUser.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));
+    deleteUser.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));
 
 
     // // add s3 bucket proxy to the api gateway

@@ -1,4 +1,5 @@
 // src deleteCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_DeleteItem_section.html
+const querystring = require('node:querystring');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 
@@ -8,13 +9,17 @@ const docClient = DynamoDBDocumentClient.from(client);
 exports.handler = async (event) => {
     console.log(event);
 
-    if (!event.queryStringParameters == null || event.queryStringParameters.userID == null)
+    // parser post parameters data
+    const data = event.body;
+    const parsedData = querystring.parse(data);
+
+    if (parsedData["userID"] == null)
     {
         return {statusCode:200, body: JSON.stringify({msg: "userID parameter is missing"})};
     }
 
     // exstract userID
-    const userID = event.queryStringParameters.userID;
+    const userID = parsedData["userID"];
 
     // check if user is exist
     const params = {
