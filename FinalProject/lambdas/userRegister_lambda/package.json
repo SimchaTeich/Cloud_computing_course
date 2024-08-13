@@ -10,8 +10,6 @@
   "description": "",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.629.0",
-    "@aws-sdk/lib-dynamodb": "^3.629.0",
-    "aws-sdk": "^2.1673.0",
-    "query-string": "^9.1.0"
+    "@aws-sdk/lib-dynamodb": "^3.629.0"
   }
 }
