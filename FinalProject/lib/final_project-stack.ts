@@ -46,6 +46,17 @@ export class FinalProjectStack extends cdk.Stack {
       role: labRole, // important for the lab so the cdk will not create a new role
     });
 
+    // create lambda for delete user by userID
+    const DeleteUserLambda = new cdk.aws_lambda.Function(this, 'DeleteUserHandler', {
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
+      handler: 'deleteUser.handler',
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\deleteUser_lambda'),
+      environment: {
+        USERS_TABLE_NAME: users_table.tableName
+      },
+      role: labRole, // important for the lab so the cdk will not create a new role
+    });
+
     // create REST API Gateway for the user system
     const user_system_api = new cdk.aws_apigateway.RestApi(this, 'UserSystemAPI', {
       restApiName: 'UserSystemAPI',
@@ -61,6 +72,8 @@ export class FinalProjectStack extends cdk.Stack {
     register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));
     const userDetails = user_system_api.root.addResource('userDetails');
     userDetails.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserLambda));
+    const deleteUser = user_system_api.root.addResource('deleteUser');
+    deleteUser.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));
 
 
     // // add s3 bucket proxy to the api gateway

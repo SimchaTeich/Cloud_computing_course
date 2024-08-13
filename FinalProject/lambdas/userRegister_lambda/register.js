@@ -1,6 +1,7 @@
 // src getCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_GetItem_section.html
 // src putCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_PutItem_section.html
 // src uuid: https://www.geeksforgeeks.org/how-to-generate-unique-id-with-node-js/
+// src using global index table: https://stackoverflow.com/questions/39026851/query-data-without-key-aws-dynamodb-sdk-nodejs
 const querystring = require('node:querystring'); 
 const { DynamoDBClient, QueryCommand} = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
