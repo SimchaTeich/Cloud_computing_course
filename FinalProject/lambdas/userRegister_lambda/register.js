@@ -3,6 +3,7 @@
 const querystring = require('node:querystring'); 
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand, PutCommand } = require('@aws-sdk/lib-dynamodb');
+const uuid = require('uuid');
 
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
@@ -33,16 +34,18 @@ exports.handler = async (event) => {
   const username = parsedData['username'];
   const email = parsedData['email'];
   const password = parsedData['password'];
+  const uniqueID = uuid.v4();
   
   const putcommand = new PutCommand({
     TableName: process.env.USERS_TABLE_NAME,
     Item: {
       email: email,
       username: username,
-      password: password
+      password: password,
+      uniqueID: uniqueID
     },
   });
 
   await docClient.send(putcommand);
-  return {statusCode:200, body: "Registration was successful"};
+  return {statusCode:200, body: JSON.stringify({msg: "Registration was successful", userID: uniqueID})};
 };

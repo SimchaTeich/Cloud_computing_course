@@ -7,23 +7,26 @@ export class FinalProjectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    // My labRole. using it later for lambdas
     const labRole = iam.Role.fromRoleArn(this, 'Role', "arn:aws:iam::160844318631:role/LabRole", {mutable: false});
 
-    const table = new cdk.aws_dynamodb.Table(this, 'users', {
+    // create the users table for the user system
+    const users_table = new cdk.aws_dynamodb.Table(this, 'users', {
       partitionKey: {name: 'email', type: cdk.aws_dynamodb.AttributeType.STRING}
     });
 
-    const lambda = new cdk.aws_lambda.Function(this, 'UserRegisterHandler', {
+    // create lambda for user registration
+    const UserRegisterLambda = new cdk.aws_lambda.Function(this, 'UserRegisterHandler', {
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
       handler: 'register.handler',
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\userRegister_lambda'),
       environment: {
-        USERS_TABLE_NAME: table.tableName
+        USERS_TABLE_NAME: users_table.tableName
       },
       role: labRole, // important for the lab so the cdk will not create a new role
     });
 
-
+    // create REST API Gateway for the user system
     const user_system_api = new cdk.aws_apigateway.RestApi(this, 'UserSystemAPI', {
       restApiName: 'UserSystemAPI',
       description: 'User System API for login and register users',
@@ -33,9 +36,9 @@ export class FinalProjectStack extends cdk.Stack {
       }
     });
 
-    // add lambdas to the api gateway
+    // add lambdas to the user system api gateway
     const register = user_system_api.root.addResource('register');
-    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(lambda));
+    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));
 
     // // add s3 bucket proxy to the api gateway
     // const bucket = new s3.Bucket(this, 'HelloBucket', {
