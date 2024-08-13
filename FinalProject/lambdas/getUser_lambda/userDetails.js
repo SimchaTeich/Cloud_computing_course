@@ -23,13 +23,13 @@ exports.handler = async (event) => {
 
     const response = await docClient.send(new GetCommand(params));
     const item = response.Item;
-    // if (item)
-    // {
-    //     return {statusCode:200, body: JSON.stringify(item)};
-    // }
+    if (item)
+    {
+        return {statusCode:200, body: JSON.stringify(item)};
+    }
     
-    //return {statusCode:200, body: JSON.stringify({msg: "userID doesnt exist"})};
-    return {statusCode:200, body: JSON.stringify(item)};
+    return {statusCode:200, body: JSON.stringify({msg: "userID doesnt exist"})};
+    // return {statusCode:200, body: JSON.stringify(item)};
 
 };
   
