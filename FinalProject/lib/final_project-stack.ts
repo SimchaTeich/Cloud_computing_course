@@ -12,7 +12,16 @@ export class FinalProjectStack extends cdk.Stack {
 
     // create the users table for the user system
     const users_table = new cdk.aws_dynamodb.Table(this, 'users', {
-      partitionKey: {name: 'email', type: cdk.aws_dynamodb.AttributeType.STRING}
+      partitionKey: {name: 'userID', type: cdk.aws_dynamodb.AttributeType.STRING}
+    });
+
+    // Create Global Secondary Index
+    users_table.addGlobalSecondaryIndex({
+      indexName: 'emailIndex',
+      partitionKey: { name: 'email', type: cdk.aws_dynamodb.AttributeType.STRING },
+      projectionType: cdk.aws_dynamodb.ProjectionType.ALL, // Adjust projection type as per your needs
+      readCapacity: 1, // Adjust as needed
+      writeCapacity: 1, // Adjust as needed
     });
 
     // create lambda for user registration
