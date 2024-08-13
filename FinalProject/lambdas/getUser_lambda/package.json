@@ -1,0 +1,15 @@
+{
+  "name": "getuser_lambda",
+  "version": "1.0.0",
+  "main": "userDetails.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.629.0",
+    "@aws-sdk/lib-dynamodb": "^3.629.0"
+  }
+}
