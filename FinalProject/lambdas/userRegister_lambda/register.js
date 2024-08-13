@@ -32,7 +32,7 @@ exports.handler = async (event) => {
   const response = await client.send(quarycommand);
   if (response.Count == 1)
   {
-    return {statusCode:200, body: "Your email is already registered"};
+    return {statusCode:200, body: JSON.stringify({msg: "Your email is already registered"})};
   }
   //------------------------
   
