@@ -9,7 +9,7 @@ exports.handler = async (event) => {
 
     if (!event.queryStringParameters == null || event.queryStringParameters.userID == null)
     {
-        return {statusCode:200, body: JSON.stringify({msg: "userID parameter is missing"})};
+        return {statusCode:200, body: JSON.stringify({msg: "userID is missing"})};
     }
 
     // exstract userID
