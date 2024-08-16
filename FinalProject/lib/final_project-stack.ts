@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
-//import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
 export class FinalProjectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -24,13 +24,22 @@ export class FinalProjectStack extends cdk.Stack {
       writeCapacity: 1, // Adjust as needed
     });
 
+    // add s3 bucket proxy to the api gateway
+    const bucket = new s3.Bucket(this, 'HelloBucket', {
+      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE
+    });
+    // Output s3 bucket name
+    new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });
+    const s3Integration = this.createS3Integration(bucket, labRole);
+
     // create lambda for user registration
     const UserRegisterLambda = new cdk.aws_lambda.Function(this, 'UserRegisterHandler', {
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
       handler: 'register.handler',
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\userRegister_lambda'),
       environment: {
-        USERS_TABLE_NAME: users_table.tableName
+        USERS_TABLE_NAME: users_table.tableName,
+        BUCKET_NAME: bucket.bucketName
       },
       role: labRole, // important for the lab so the cdk will not create a new role
     });
@@ -75,44 +84,34 @@ export class FinalProjectStack extends cdk.Stack {
     const deleteUser = user_system_api.root.addResource('deleteUser');
     deleteUser.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));
 
-
-    // // add s3 bucket proxy to the api gateway
-    // const bucket = new s3.Bucket(this, 'HelloBucket', {
-    //   removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE
-    // });
-
-    // // Output s3 bucket name
-    // new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });
-
-    // const s3Integration = this.createS3Integration(bucket, labRole);
     
     // // curl https://kbjilkhg8l.execute-api.us-east-1.amazonaws.com/prod/assets/test/sample_image.jpg
     // this.addAssetsEndpoint(api, s3Integration);
   }
 
-  // private createS3Integration(assetsBucket: cdk.aws_s3.IBucket, executeRole: cdk.aws_iam.IRole) {
-  //   return new cdk.aws_apigateway.AwsIntegration({
-  //     service: "s3",
-  //     integrationHttpMethod: "GET",
-  //     path: `${assetsBucket.bucketName}/{folder}/{key}`,
-  //     options: {
-  //       credentialsRole: executeRole,
-  //       integrationResponses: [
-  //         {
-  //           statusCode: "200",
-  //           responseParameters: {
-  //             "method.response.header.Content-Type": "integration.response.header.Content-Type",
-  //           },
-  //         },
-  //       ],
+  private createS3Integration(assetsBucket: cdk.aws_s3.IBucket, executeRole: cdk.aws_iam.IRole) {
+    return new cdk.aws_apigateway.AwsIntegration({
+      service: "s3",
+      integrationHttpMethod: "GET",
+      path: `${assetsBucket.bucketName}/{folder}/{key}`,
+      options: {
+        credentialsRole: executeRole,
+        integrationResponses: [
+          {
+            statusCode: "200",
+            responseParameters: {
+              "method.response.header.Content-Type": "integration.response.header.Content-Type",
+            },
+          },
+        ],
 
-  //       requestParameters: {
-  //         "integration.request.path.folder": "method.request.path.folder",
-  //         "integration.request.path.key": "method.request.path.key",
-  //       },
-  //     },
-  //   });
-  // }
+        requestParameters: {
+          "integration.request.path.folder": "method.request.path.folder",
+          "integration.request.path.key": "method.request.path.key",
+        },
+      },
+    });
+  }
 
   // private addAssetsEndpoint(
   //   apiGateway: cdk.aws_apigateway.RestApi,

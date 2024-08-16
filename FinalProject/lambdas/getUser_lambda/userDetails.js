@@ -1,3 +1,8 @@
+/************************************************************************************************************************************
+* RESOURCES:                                                                                                                        *
+* getCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_GetItem_section.html                *
+*************************************************************************************************************************************/
+
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
 
