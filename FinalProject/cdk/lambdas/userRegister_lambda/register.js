@@ -7,7 +7,6 @@
 *************************************************************************************************************************************/
 
 // imports
-const querystring = require('node:querystring'); 
 const { DynamoDBClient, QueryCommand} = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
 const uuid = require('uuid');
@@ -33,22 +32,9 @@ exports.handler = async (event) => {
   console.log(event);
 
   //--------------------------------------------------
-  // parser post parameters data
+  // exstract post parameters data
   const data = JSON.parse(event.body);
-  
-  // return {
-  //   statusCode: 200,
-  //   body: JSON.stringify({ msg: data.username + ' ' + data.password + ' ' + data.email }),
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Access-Control-Allow-Origin': '*',
-  //     'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  //     'Access-Control-Allow-Headers': 'Content-Type'
-  //   }
-  // };
-
-  //const parsedData = querystring.parse(data);
-  //console.log(parsedData);
+ 
   const username = data.username;
   const email = data.email;
   const password = data.password;
@@ -99,6 +85,7 @@ exports.handler = async (event) => {
   //--------------------------------------------------
 
 
+  //--------------------------------------------------
   // end finaly, create the user folder in the s3 bucket
   await createFolder(process.env.BUCKET_NAME, userID+"/");
 
@@ -115,4 +102,5 @@ exports.handler = async (event) => {
       'Access-Control-Allow-Headers': 'Content-Type'
     }
   };
+  //--------------------------------------------------
 };
