@@ -119,7 +119,7 @@ export class FinalProjectStack extends cdk.Stack {
     //                                                                                                              //
     // add lambdas to the user system api gateway                                                                   //
     const register = user_system_api.root.addResource('register');                                                  //
-    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));                       //
+    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));
     const userDetails = user_system_api.root.addResource('userDetails');                                            //
     userDetails.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserLambda));                          //
     const deleteUser = user_system_api.root.addResource('deleteUser');                                              //

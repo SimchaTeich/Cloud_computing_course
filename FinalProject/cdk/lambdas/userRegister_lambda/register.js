@@ -34,12 +34,24 @@ exports.handler = async (event) => {
 
   //--------------------------------------------------
   // parser post parameters data
-  const data = event.body;
-  const parsedData = querystring.parse(data);
-  console.log(parsedData);
-  const username = parsedData['username'];
-  const email = parsedData['email'];
-  const password = parsedData['password'];
+  const data = JSON.parse(event.body);
+  
+  // return {
+  //   statusCode: 200,
+  //   body: JSON.stringify({ msg: data.username + ' ' + data.password + ' ' + data.email }),
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  //     'Access-Control-Allow-Headers': 'Content-Type'
+  //   }
+  // };
+
+  //const parsedData = querystring.parse(data);
+  //console.log(parsedData);
+  const username = data.username;
+  const email = data.email;
+  const password = data.password;
   //--------------------------------------------------
 
  
@@ -57,7 +69,16 @@ exports.handler = async (event) => {
   const response = await client.send(quarycommand);
   if (response.Count == 1)
   {
-    return {statusCode:200, body: JSON.stringify({msg: "Your email is already registered"})};
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ msg: "Your email is already registered"}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    };
   }
   //------------------------------------------------------------------------------------------
   
@@ -81,6 +102,17 @@ exports.handler = async (event) => {
   // end finaly, create the user folder in the s3 bucket
   await createFolder(process.env.BUCKET_NAME, userID+"/");
 
-
-  return {statusCode:200, body: JSON.stringify({msg: "Registration was successful", userID: userID})};
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      msg: "Registration was successful",
+      userID: userID
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    }
+  };
 };
