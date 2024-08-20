@@ -6,9 +6,8 @@
 // Imports
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
-const { S3Client } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const { PutObjectCommand } = require('@aws-sdk/client-s3');
 
 // DynamoDB clients
 const client = new DynamoDBClient();

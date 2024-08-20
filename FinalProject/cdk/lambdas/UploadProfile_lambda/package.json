@@ -1,0 +1,17 @@
+{
+  "name": "uploadprofile_lambda",
+  "version": "1.0.0",
+  "main": "uploadProfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.632.0",
+    "@aws-sdk/client-s3": "^3.633.0",
+    "@aws-sdk/lib-dynamodb": "^3.632.0",
+    "@aws-sdk/s3-request-presigner": "^3.633.0"
+  }
+}
