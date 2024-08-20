@@ -33,12 +33,12 @@
             // Step 1: Get the pre-signed URL
             const response = await fetch(`https://xueq1x49q1.execute-api.us-east-1.amazonaws.com/prod/uploadProfile?userID=${userID}`);
             const data = await response.json();
-            if (!response.ok) {
-                alert('Failed to get pre-signed URL: ' + data.msg);
+            if (data.hasOwnProperty('error')) {
+                alert('Failed to get pre-signed URL: ' + data.error);
                 return;
             }
             
-            const preSignedUrl = data.url; 
+            const preSignedUrl = data.preSignedUrl; 
             console.log(preSignedUrl);
 
             // Step 2: Upload the file using the pre-signed URL

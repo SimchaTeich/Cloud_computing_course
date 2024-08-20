@@ -41,7 +41,7 @@ exports.handler = async (event) => {
     {
         return {
             statusCode: 404,
-            body: JSON.stringify({msg: "userID is missing"}),
+            body: JSON.stringify({error: "userID is missing"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -64,7 +64,7 @@ exports.handler = async (event) => {
     if (!item) {
         return { 
             statusCode: 404, 
-            body: JSON.stringify({ msg: "UserID doesn't exist" }),
+            body: JSON.stringify({error: "UserID doesn't exist"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -81,7 +81,7 @@ exports.handler = async (event) => {
 
     return {
         statusCode: 200,
-        body: JSON.stringify({ url: url }),
+        body: JSON.stringify({ preSignedUrl: url }),
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
