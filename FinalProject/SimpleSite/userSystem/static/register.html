@@ -51,26 +51,6 @@
             });
             const data = await response.json();
             alert(JSON.stringify(data));
-            // if (!response.ok) {
-            //     alert('Failed to get pre-signed URL: ' + data.msg);
-            //     return;
-            // }
-            
-            // const preSignedUrl = data.url; 
-            // console.log(preSignedUrl);
-
-            // // Step 2: Upload the file using the pre-signed URL
-            // const uploadResponse = await fetch(preSignedUrl, {
-            //     method: 'PUT',
-            //     body: file
-            // });
-            
-            // if (!uploadResponse.ok) {
-            //     alert('Failed to upload the file.');
-            //     return;
-            // }
-            
-            // alert('File uploaded successfully!');
         });
     </script>
 </html>
