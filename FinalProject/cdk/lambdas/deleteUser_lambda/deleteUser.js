@@ -61,15 +61,28 @@ exports.handler = async (event) => {
     console.log(event);
 
     // Parse POST parameters data
-    const data = event.body;
-    const parsedData = querystring.parse(data);
+    const data = JSON.parse(event.body);
 
+
+    //--------------------------------------------------
     // Exstract userID
-    if (!parsedData["userID"]) {
-        return { statusCode: 400, body: JSON.stringify({ msg: "userID is missing" }) };
+    const userID = data.userID;
+    if (!userID) {
+        return { 
+            statusCode: 404,
+            body: JSON.stringify({ msg: "userID is missing" }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        };
     }
-    const userID = parsedData["userID"];
+    //--------------------------------------------------
 
+
+    //--------------------------------------------------
     // Check if user exists
     const params = {
         TableName: process.env.USERS_TABLE_NAME,
@@ -78,14 +91,34 @@ exports.handler = async (event) => {
     const response = await docClient.send(new GetCommand(params));
     const item = response.Item;
     if (!item) {
-        return { statusCode: 404, body: JSON.stringify({ msg: "UserID doesn't exist" }) };
+        return {
+            statusCode: 404,
+            body: JSON.stringify({ msg: "UserID doesn't exist" }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        };
     }
+    //--------------------------------------------------
 
-    // Delete user by userID
+
+    //--------------------------------------------------
+    // Delete user by userID from DynamoDB and S3
     await docClient.send(new DeleteCommand(params));
-
-    // Finally, delete user folder
     await deleteFolder(process.env.BUCKET_NAME, userID + "/");
 
-    return { statusCode: 200, body: JSON.stringify({ msg: "User deleted successfully" }) };
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ msg: "User deleted successfully" }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    };
+    //--------------------------------------------------
 };
