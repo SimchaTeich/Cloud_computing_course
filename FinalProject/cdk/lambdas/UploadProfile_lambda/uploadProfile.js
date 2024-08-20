@@ -35,6 +35,7 @@ async function generatePreSignedUrl(Bucket, Key) {
 exports.handler = async (event) => {
     console.log(event);
 
+    //--------------------------------------------------
     // exstract userID
     if (!event.queryStringParameters == null || event.queryStringParameters.userID == null)
     {
@@ -49,7 +50,10 @@ exports.handler = async (event) => {
         };
     }
     const userID = event.queryStringParameters.userID;
+    //--------------------------------------------------
 
+
+    //--------------------------------------------------
     // Check if user doesnt exists
     const params = {
         TableName: process.env.USERS_TABLE_NAME,
@@ -68,8 +72,11 @@ exports.handler = async (event) => {
             }
         };
     }
+    //--------------------------------------------------
 
-    // else, prepare the preSignUrl:
+
+    //--------------------------------------------------
+    // prepare the preSignUrl:
     const url = await generatePreSignedUrl(process.env.BUCKET_NAME, userID+"/profile.png");
 
     return {
@@ -80,6 +87,7 @@ exports.handler = async (event) => {
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type'
         }
-      };
+    };
+    //--------------------------------------------------
 };
   

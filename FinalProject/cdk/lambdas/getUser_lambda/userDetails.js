@@ -17,6 +17,17 @@ exports.handler = async (event) => {
 
     //--------------------------------------------------
     // exstract userID
+    if (!event.queryStringParameters == null || event.queryStringParameters.userID == null) {
+        return {
+            statusCode: 404,
+            body: JSON.stringify({msg: "userID is missing"}),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        };
+    }
     const userID = event.queryStringParameters.userID;
     //--------------------------------------------------
 
