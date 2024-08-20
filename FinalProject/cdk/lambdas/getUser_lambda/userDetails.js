@@ -1,25 +1,47 @@
 /************************************************************************************************************************************
 * RESOURCES:                                                                                                                        *
 * getCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_GetItem_section.html                *
+* check if object exist: https://stackoverflow.com/questions/26726862/how-to-determine-if-object-exists-aws-s3-node-js-sdk          *
 *************************************************************************************************************************************/
 
 // Imports
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand, HeadObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 // DynamoDB clients
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
+// S3 client
+const s3Client = new S3Client();
+
+
+/**
+* Function check if an object is exist in s3
+*/
+async function checkFileIsExist(Bucket, Key) {
+    const params = {
+        Bucket: Bucket,
+        Key: Key
+    };
+
+    const command = new HeadObjectCommand(params);
+    
+    try {
+        await s3Client.send(command);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 
 /**
 * Function create and return preSignedUrl for get requests
 */
 async function generatePreSignedUrl(Bucket, Key) {
-    const s3Client = new S3Client();
-
     const getObjectParams = {
         Bucket: Bucket,
         Key: Key
@@ -80,13 +102,25 @@ exports.handler = async (event) => {
     //--------------------------------------------------
 
 
-    // get presignedurl for profile
-    const profileUrl = await generatePreSignedUrl(process.env.BUCKET_NAME, userID+"/profile.png");
-
+    //--------------------------------------------------
+    // check if there is a valid profile image
+    const validProfile = await checkFileIsExist(process.env.BUCKET_NAME, userID+"/profile.png");
+    let profileUrl = "";
     
+    // get preSignedUrl for profile
+    if (validProfile) {
+        profileUrl = await generatePreSignedUrl(process.env.BUCKET_NAME, userID+"/profile.png");
+    }
+
+    // update item with profile image
+    item["validProfileImg"] = validProfile;
+    if (validProfile) {
+        item["profilePreSignedUrl"] = profileUrl;
+    }
+
     return {
         statusCode: 200,
-        body: JSON.stringify({userDetails: item, profile: profileUrl}),
+        body: JSON.stringify({userDetails: item}),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
