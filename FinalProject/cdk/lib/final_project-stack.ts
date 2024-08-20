@@ -71,7 +71,8 @@ export class FinalProjectStack extends cdk.Stack {
       handler: 'userDetails.handler',                                                                               //
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\getUser_lambda'),                                               //
       environment: {                                                                                                //
-        USERS_TABLE_NAME: users_table.tableName                                                                     //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        BUCKET_NAME: bucket.bucketName
       },                                                                                                            //
       role: labRole, // important for the lab so the cdk will not create a new role                                 //
     });                                                                                                             //
