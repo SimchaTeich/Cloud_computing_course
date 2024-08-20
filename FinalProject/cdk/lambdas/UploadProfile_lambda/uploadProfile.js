@@ -27,13 +27,7 @@ async function generatePreSignedUrl(Bucket, Key) {
     };
 
     const command = new PutObjectCommand(putObjectParams);
-    let url;
-    try{
-        url = await getSignedUrl(s3Client, command, {expiresIn: 3600});
-    } catch (err) {
-        return "error";
-    }
-
+    const url = await getSignedUrl(s3Client, command, {expiresIn: 3600});
     return url;
 }
 
@@ -45,7 +39,7 @@ exports.handler = async (event) => {
     if (!event.queryStringParameters == null || event.queryStringParameters.userID == null)
     {
         return {
-            statusCode:404,
+            statusCode: 404,
             body: JSON.stringify({msg: "userID is missing"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -87,6 +81,5 @@ exports.handler = async (event) => {
           'Access-Control-Allow-Headers': 'Content-Type'
         }
       };
-      
 };
   
