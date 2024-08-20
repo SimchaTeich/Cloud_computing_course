@@ -29,7 +29,7 @@ async function generatePreSignedUrl(Bucket, Key) {
     const command = new PutObjectCommand(putObjectParams);
     let url;
     try{
-    url = await getSignedUrl(s3Client, command, {expiresIn: 3600});
+        url = await getSignedUrl(s3Client, command, {expiresIn: 3600});
     } catch (err) {
         return "error";
     }
@@ -44,7 +44,15 @@ exports.handler = async (event) => {
     // exstract userID
     if (!event.queryStringParameters == null || event.queryStringParameters.userID == null)
     {
-        return {statusCode:200, body: JSON.stringify({msg: "userID is missing"})};
+        return {
+            statusCode:404,
+            body: JSON.stringify({msg: "userID is missing"}),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        };
     }
     const userID = event.queryStringParameters.userID;
 
@@ -56,7 +64,15 @@ exports.handler = async (event) => {
     const response = await docClient.send(new GetCommand(params));
     const item = response.Item;
     if (!item) {
-        return { statusCode: 404, body: JSON.stringify({ msg: "UserID doesn't exist" }) };
+        return { 
+            statusCode: 404, 
+            body: JSON.stringify({ msg: "UserID doesn't exist" }),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            }
+        };
     }
 
     // else, prepare the preSignUrl:
@@ -66,7 +82,7 @@ exports.handler = async (event) => {
         statusCode: 200,
         body: JSON.stringify({ url: url }),
         headers: {
-          'Access-Control-Allow-Origin': '*', // Adjust this as needed
+          'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type'
         }
