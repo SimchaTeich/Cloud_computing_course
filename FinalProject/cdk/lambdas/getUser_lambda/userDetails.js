@@ -20,7 +20,7 @@ exports.handler = async (event) => {
     if (!event.queryStringParameters == null || event.queryStringParameters.userID == null) {
         return {
             statusCode: 404,
-            body: JSON.stringify({msg: "userID is missing"}),
+            body: JSON.stringify({error: "userID is missing"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -48,7 +48,6 @@ exports.handler = async (event) => {
     // check if user exist
     if (item)
     {
-        //return {statusCode:200, body: JSON.stringify(item)};
         return {
             statusCode: 200,
             body: JSON.stringify({userDetails: item}),
@@ -57,7 +56,7 @@ exports.handler = async (event) => {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type'
-              }
+            }
         };
     }
     // else..

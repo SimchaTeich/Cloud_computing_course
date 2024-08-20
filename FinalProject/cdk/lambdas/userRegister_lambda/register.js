@@ -57,7 +57,7 @@ exports.handler = async (event) => {
   {
     return {
       statusCode: 200,
-      body: JSON.stringify({ msg: "Your email is already registered"}),
+      body: JSON.stringify({error: "Your email is already registered"}),
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
