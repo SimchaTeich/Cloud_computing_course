@@ -2,6 +2,7 @@
 * RESOURCES:                                                                                                                        *
 * getCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_GetItem_section.html                *
 * check if object exist: https://stackoverflow.com/questions/26726862/how-to-determine-if-object-exists-aws-s3-node-js-sdk          *
+* insert new key-value: https://stackoverflow.com/questions/28527712/how-to-add-key-value-pair-in-the-json-object-already-declared  *
 *************************************************************************************************************************************/
 
 // Imports
