@@ -36,7 +36,14 @@ export class FinalProjectStack extends cdk.Stack {
     /*--------------------------------------------------------------------------------------------------------------*/
     // add s3 bucket proxy to the api gateway                                                                       //
     const bucket = new s3.Bucket(this, 'HelloBucket', {                                                             //
-      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE                                                   //
+      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
+      cors: [
+        {
+          allowedOrigins: ['*'], // Adjust this to your specific origins
+          allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT],
+          allowedHeaders: ['*'],
+        },
+      ],
     });                                                                                                             //
     // Output s3 bucket name                                                                                        //
     new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });                                            //
