@@ -116,10 +116,10 @@ export class FinalProjectStack extends cdk.Stack {
       role: labRole,                                                               
     });
     // create lambda for get a list of all users
-    const GetUserListLambda = new cdk.aws_lambda.Function(this, 'GetUserListHandler', { 
+    const GetOtherUsersLambda = new cdk.aws_lambda.Function(this, 'GetOtherUsersHandler', { 
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'userlist.handler',
-      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getUserList_lambda'),
+      handler: 'getOtherUsers.handler',
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getOtherUsers_lambda'),
       environment: {
         USERS_TABLE_NAME: users_table.tableName
       },
@@ -162,8 +162,8 @@ export class FinalProjectStack extends cdk.Stack {
         }
       ]
     });
-    const getUserList = user_system_api.root.addResource('getUserList');
-    getUserList.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserListLambda));
+    const otherUsers = user_system_api.root.addResource('otherUsers');
+    otherUsers.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetOtherUsersLambda));
     /*--------------------------------------------------------------------------------------------------------------*/
 
     
