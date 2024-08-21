@@ -98,6 +98,7 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\deleteUser_lambda'),                                            //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        TOPICS_TABLE_NAME: topics_table.tableName,                                                                  //
         BUCKET_NAME: bucket.bucketName                                                                              //
       },                                                                                                            //
       role: labRole, // important for the lab so the cdk will not create a new role                                 //

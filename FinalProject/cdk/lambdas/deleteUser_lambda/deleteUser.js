@@ -1,17 +1,23 @@
 /************************************************************************************************************************************
 * RESOURCES:                                                                                                                        *
 * deleteCommand: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_DeleteItem_section.html          *
+* delete sns topic: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/sns-examples-managing-topics.html             *
 *************************************************************************************************************************************/
 
 // Imports
-const querystring = require('node:querystring');
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, GetCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBClient }                                       = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, GetCommand, DeleteCommand }    = require('@aws-sdk/lib-dynamodb');
 const { S3Client, ListObjectsV2Command, DeleteObjectsCommand } = require("@aws-sdk/client-s3");
+const { SNSClient, DeleteTopicCommand }                        = require("@aws-sdk/client-sns");
+
 
 // DynamoDB clients
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
+
+
+// SNS client
+const snsClient = new SNSClient();
 
 
 /**
@@ -55,6 +61,19 @@ async function deleteFolder(Bucket, Key) {
         await s3Client.send(new DeleteObjectsCommand(deleteParams));
     }
 }
+
+
+
+/*
+* function deletes an sns topic
+*/
+async function deleteTopic(topicArn) {
+    const response = await snsClient.send(
+      new DeleteTopicCommand({ TopicArn: topicArn }),
+    );
+    return response.TopicArn;
+}
+
 
 
 exports.handler = async (event) => {
@@ -106,9 +125,22 @@ exports.handler = async (event) => {
 
 
     //--------------------------------------------------
-    // Delete user by userID from DynamoDB and S3
-    await docClient.send(new DeleteCommand(params));
-    await deleteFolder(process.env.BUCKET_NAME, userID + "/");
+    // Delete user by userID from the: DynamoDB users table,
+    //                                 S3 user folder,
+    //                                 sns user topic,
+    //                                 DynamoDB topics table
+    await docClient.send(new DeleteCommand(params));           // DynamoDB users table
+    await deleteFolder(process.env.BUCKET_NAME, userID + "/"); // S3 user folder,
+    const params2 = {
+        TableName: process.env.TOPICS_TABLE_NAME,
+        Key: { userID: userID }
+    };
+    const response2 = await docClient.send(new GetCommand(params2));
+    const topicArn = response2.Item.topicArn;
+    await deleteTopic(topicArn);                               // delete the sns itself
+    await docClient.send(new DeleteCommand(params2));           // delete user db entry for sns
+    //--------------------------------------------------
+
 
     return {
         statusCode: 200,
@@ -120,5 +152,4 @@ exports.handler = async (event) => {
             'Access-Control-Allow-Headers': 'Content-Type'
         }
     };
-    //--------------------------------------------------
 };
