@@ -4,17 +4,17 @@
 * ProjectionExpression exmaple: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-query-scan.html  *
 * size of json: https://stackoverflow.com/questions/6756104/get-size-of-json-object                                                 *
 * filter for 'not equel': https://stackoverflow.com/questions/44998093/why-is-there-no-not-equal-comparison-in-dynamodb-queries     *
-* 
 *************************************************************************************************************************************/
 
-
 // Imports
-const { DynamoDBClient, ScanCommand } = require("@aws-sdk/client-dynamodb");
-const { unmarshall } = require("@aws-sdk/util-dynamodb");
+const { DynamoDBClient, ScanCommand }        = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
+const { unmarshall }                         = require("@aws-sdk/util-dynamodb");
+
 
 // DynamoDB clients
 const client = new DynamoDBClient();
-//const docClient = DynamoDBDocumentClient.from(client);
+const docClient = DynamoDBDocumentClient.from(client);
 
 
 /*
@@ -58,7 +58,30 @@ exports.handler = async (event) => {
 
 
     //--------------------------------------------------
-    // get all users
+    // check if user doesnt exist
+    const params = {
+        TableName: process.env.USERS_TABLE_NAME,
+        Key: {userID: userID}
+    };
+    const response = await docClient.send(new GetCommand(params));
+    const item = response.Item;
+    if (!item) {
+        return {
+            statusCode: 404,
+            body: JSON.stringify({error: "userID doesnt exist"}),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+                }
+        };
+    }
+    //--------------------------------------------------
+
+
+    //--------------------------------------------------
+    // get all other users
     const userList = await scanOtherUsers(userID);
     
     return {
