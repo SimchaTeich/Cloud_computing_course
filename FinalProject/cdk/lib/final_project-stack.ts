@@ -88,7 +88,7 @@ export class FinalProjectStack extends cdk.Stack {
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
         BUCKET_NAME: bucket.bucketName                                                                              //
       },                                                                                                            //
-      role: labRole, // important for the lab so the cdk will not create a new role                                 //
+      role: labRole,                                                                                                //
     });                                                                                                             //
     //                                                                                                              //
     // create lambda for delete user by userID                                                                      //
@@ -101,7 +101,7 @@ export class FinalProjectStack extends cdk.Stack {
         TOPICS_TABLE_NAME: topics_table.tableName,                                                                  //
         BUCKET_NAME: bucket.bucketName                                                                              //
       },                                                                                                            //
-      role: labRole, // important for the lab so the cdk will not create a new role                                 //
+      role: labRole,                                                                                                //
     });                                                                                                             //
     //
     // create lambda for upload user profile by userID (return preSignUrl for put command)
@@ -113,10 +113,19 @@ export class FinalProjectStack extends cdk.Stack {
         USERS_TABLE_NAME: users_table.tableName,
         BUCKET_NAME: bucket.bucketName
       },
-      role: labRole, // important for the lab so the cdk will not create a new role
+      role: labRole,                                                               
+    });
+    // create lambda for get a list of all users
+    const GetUserListLambda = new cdk.aws_lambda.Function(this, 'GetUserListHandler', { 
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
+      handler: 'userlist.handler',
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getUserList_lambda'),
+      environment: {
+        USERS_TABLE_NAME: users_table.tableName
+      },
+      role: labRole,
     });
     /*--------------------------------------------------------------------------------------------------------------*/
-
 
 
 
@@ -153,7 +162,8 @@ export class FinalProjectStack extends cdk.Stack {
         }
       ]
     });
-    
+    const getUserList = user_system_api.root.addResource('getUserList');
+    getUserList.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserListLambda));
     /*--------------------------------------------------------------------------------------------------------------*/
 
     
