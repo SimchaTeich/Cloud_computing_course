@@ -14,6 +14,7 @@ export class FinalProjectStack extends cdk.Stack {
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
+
     // users table 
     /*--------------------------------------------------------------------------------------------------------------*/
     // create the users table for the user system                                                                   //
@@ -32,23 +33,35 @@ export class FinalProjectStack extends cdk.Stack {
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
+
+    // sns topic-per-user table
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create the users table for the user system                                                                   //
+    const topics_table = new cdk.aws_dynamodb.Table(this, 'topics', {                                               //
+      partitionKey: {name: 'userID', type: cdk.aws_dynamodb.AttributeType.STRING}                                   //
+    });                                                                                                             //                                                                                                            //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
     // s3 for users
     /*--------------------------------------------------------------------------------------------------------------*/
     // add s3 bucket proxy to the api gateway                                                                       //
     const bucket = new s3.Bucket(this, 'HelloBucket', {                                                             //
-      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
-      cors: [
-        {
-          allowedOrigins: ['*'], // Adjust this to your specific origins
-          allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT],
-          allowedHeaders: ['*'],
-        },
-      ],
+      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,                                                  //
+      cors: [                                                                                                       //
+        {                                                                                                           //
+          allowedOrigins: ['*'], // Adjust this to your specific origins                                            //
+          allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT],                                                 //
+          allowedHeaders: ['*'],                                                                                    //
+        },                                                                                                          //
+      ],                                                                                                            //
     });                                                                                                             //
     // Output s3 bucket name                                                                                        //
     new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });                                            //
     const s3Integration = this.createS3Integration(bucket, labRole);                                                //
     /*--------------------------------------------------------------------------------------------------------------*/
+
 
 
     // lambdas for user system
@@ -60,6 +73,7 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\userRegister_lambda'),                                          //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        TOPICS_TABLE_NAME: topics_table.tableName,                                                                  //
         BUCKET_NAME: bucket.bucketName                                                                              //
       },                                                                                                            //
       role: labRole, // important for the lab so the cdk will not create a new role                                 //
@@ -72,7 +86,7 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\getUser_lambda'),                                               //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
-        BUCKET_NAME: bucket.bucketName
+        BUCKET_NAME: bucket.bucketName                                                                              //
       },                                                                                                            //
       role: labRole, // important for the lab so the cdk will not create a new role                                 //
     });                                                                                                             //
