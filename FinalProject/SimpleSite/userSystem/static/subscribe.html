@@ -35,6 +35,15 @@
             const userButtonsContainer = document.getElementById('users-list-container');
             userButtonsContainer.innerHTML = '';
 
+            if (data.hasOwnProperty('error')) {
+                alert(data.error);
+                return;
+            }
+            else if (data.count == 0) {
+                userButtonsContainer.innerHTML = 'Congratulations! You are the only one on this social network!';
+                return;
+            }
+
             // Add buttons for each user
             data.userList.forEach(user => {
                 // Create a container for each user
