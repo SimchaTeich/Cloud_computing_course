@@ -29,6 +29,11 @@ app.get('/uploadProfile', (req, res) => {
 });
 
 
+app.get('/subscribe', (req, res) => {
+    res.sendFile(__dirname + '/static/subscribe.html');
+});
+
+
 app.listen(PORT, () => {
     console.log(`This app is listening on port ${PORT}`);
 });

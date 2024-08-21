@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Subscribe Form</title>
+    </head>
+    <body>
+        <h1>Subscribe</h1>
+        <form id="subscribeForm">
+            <label for="userID">userID:</label>
+            <br>
+            <input type="text" id="userID" name="userID" required>
+            <br><br>
+            <button type="submit">View Other User</button>
+        </form>
+    </body>
+    <script>
+        document.getElementById('subscribeForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const userID = document.getElementById('userID').value;
+            
+            if (!userID) {
+                alert('userID is empty');
+                return;
+            }
+            
+            const response = await fetch(`https://xueq1x49q1.execute-api.us-east-1.amazonaws.com/prod/otherUsers?userID=${userID}`, {method: 'GET'});
+            const data = await response.json();
+            alert(JSON.stringify(data));
+            console.log(data);
+        });
+    </script>
+</html>
