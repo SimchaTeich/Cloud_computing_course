@@ -3,6 +3,8 @@
 * scan table and unmarshall: https://martin-sobrero-m.medium.com/get-all-result-items-from-the-scan-method-in-dynamodb-cb21f924ad42 *
 * ProjectionExpression exmaple: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-query-scan.html  *
 * size of json: https://stackoverflow.com/questions/6756104/get-size-of-json-object                                                 *
+* filter for 'not equel': https://stackoverflow.com/questions/44998093/why-is-there-no-not-equal-comparison-in-dynamodb-queries     *
+* 
 *************************************************************************************************************************************/
 
 
@@ -19,16 +21,13 @@ const client = new DynamoDBClient();
 * Function return all items in specific DynamoDB table,
 * wihtout a specific userID
 */
-async function scanUsers(tableName, userID) {
+async function scanOtherUsers(userID) {
     let input = {
-        TableName: tableName,
+        TableName: process.env.USERS_TABLE_NAME,
         ProjectionExpression: "username, email",
-        FilterExpression: '#userID = :userID',
-        ExpressionAttributeNames: {
-            '#userID': 'userID',
-        },
+        FilterExpression: 'userID <> :userID',
         ExpressionAttributeValues: {
-            ':userID': userID,
+            ':userID': {'S': userID }
         },
     };
 
@@ -60,7 +59,7 @@ exports.handler = async (event) => {
 
     //--------------------------------------------------
     // get all users
-    const userList = await scanUsers(process.env.USERS_TABLE_NAME, userID);
+    const userList = await scanOtherUsers(userID);
     
     return {
         statusCode: 200,
