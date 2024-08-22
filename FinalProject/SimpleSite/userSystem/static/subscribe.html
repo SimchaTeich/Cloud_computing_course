@@ -57,8 +57,19 @@
                 // Create button
                 const button = document.createElement('button');
                 button.textContent = 'subscribe';
-                button.addEventListener('click', () => {
-                    alert(`Button for ${user.username} clicked`);
+                button.addEventListener('click', async (event) => {
+                    //alert(`Button for ${user.username} clicked`);
+                    event.preventDefault();
+
+                    const response = await fetch(`https://ylvil6fkmf.execute-api.us-east-1.amazonaws.com/prod/subscribe`, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            userID: userID,
+                            publisherEmail: user.email
+                        })
+                    });
+                    const data = await response.json();
+                    alert(JSON.stringify(data));
                 });
 
                 // Append text and button to the user container
