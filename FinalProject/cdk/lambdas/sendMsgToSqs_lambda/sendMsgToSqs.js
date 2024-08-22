@@ -40,9 +40,18 @@ async function send2SQS(sqsURL, publisherUserID, subject, body) {
 exports.handler = async (event) => {
     console.log(event);
 
+    //--------------------------------------------------
+    // exstract post parameters data
+    const data = JSON.parse(event.body);
+    
+    const publisherUserID = data.userID;
+    const subject = data.subject;
+    const body = data.body;
+    //--------------------------------------------------
+
     const sqsURL = process.env.SQS_URL;
 
-    await send2SQS(sqsURL, "67c6f532-daf8-484f-abdc-d31966bfa65d", "subject-from-lambda", "body-form-lambda");
+    await send2SQS(sqsURL, publisherUserID, subject, body);//"67c6f532-daf8-484f-abdc-d31966bfa65d", "subject-from-lambda", "body-form-lambda");
 
     return {
         statusCode: 200,
