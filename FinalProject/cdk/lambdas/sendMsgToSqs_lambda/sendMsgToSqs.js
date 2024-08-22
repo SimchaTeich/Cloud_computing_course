@@ -18,22 +18,20 @@ const client = new SQSClient();
 * input: sqs-url, publisher-usserID, subject (email title) & body (the actual message)
 */
 async function send2SQS(sqsURL, publisherUserID, subject, body) {
-    var params = {
+    await client.send(new SendMessageCommand({
         MessageAttributes: {
             publisherUserID: {
                 DataType: "String",
-                StringValue: publisherUserID // from post parameters
+                StringValue: publisherUserID
             },
             Subject: {
                 DataType: "String",
-                StringValue: subject // from post parameters
-          }
+                StringValue: subject
+            }
         },
-        MessageBody: body, // from post parameters
+        MessageBody: body + "\n\n-----\nFacebook friend Idan sent you a message!",
         QueueUrl: sqsURL
-    };
-
-    await client.send(new SendMessageCommand(params));
+    }));
 }
 
 
@@ -51,7 +49,7 @@ exports.handler = async (event) => {
 
     const sqsURL = process.env.SQS_URL;
 
-    await send2SQS(sqsURL, publisherUserID, subject, body);//"67c6f532-daf8-484f-abdc-d31966bfa65d", "subject-from-lambda", "body-form-lambda");
+    await send2SQS(sqsURL, publisherUserID, subject, body);
 
     return {
         statusCode: 200,
