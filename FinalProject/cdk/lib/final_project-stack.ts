@@ -173,8 +173,20 @@ export class FinalProjectStack extends cdk.Stack {
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
-    // connect it to the sqs queue
-    PublishFromSQSLambda.addEventSource(new cdk.aws_lambda_event_sources.SqsEventSource(queue));
+    // connect it to the sqs queue                                                                                  //
+    PublishFromSQSLambda.addEventSource(new cdk.aws_lambda_event_sources.SqsEventSource(queue));                    //
+    //                                                                                                              //
+    // create lambda for sending message into the queue                                                             //
+    const sendMsgToSQSLambda = new cdk.aws_lambda.Function(this, 'sendMsgToSQSHandler', {                           //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'sendMsgToSqs.handler',                                                                              //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\sendMsgToSqs_lambda'),                                          //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName,                                                                  //
+        SQS_URL: queue.queueUrl                                                                                     //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -232,8 +244,10 @@ export class FinalProjectStack extends cdk.Stack {
     });                                                                                                             //
     //                                                                                                              //
     // add lambdas to the user system api gateway                                                                   //
-    const subscribe = distribution_msg_api.root.addResource('subscribe');
-    subscribe.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(SubscribeLambda));
+    const subscribe = distribution_msg_api.root.addResource('subscribe');                                           //
+    subscribe.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(SubscribeLambda));                         //
+    const msgToSubscribers = distribution_msg_api.root.addResource('msgToSubscribers');                             //
+    msgToSubscribers.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(sendMsgToSQSLambda));               //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
