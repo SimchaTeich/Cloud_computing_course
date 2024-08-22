@@ -103,28 +103,45 @@ export class FinalProjectStack extends cdk.Stack {
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
-    //
-    // create lambda for upload user profile by userID (return preSignUrl for put command)
-    const UploadProfileLambda = new cdk.aws_lambda.Function(this, 'UploadProfileHandler', { 
-      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'uploadProfile.handler',
-      code: cdk.aws_lambda.Code.fromAsset('lambdas\\UploadProfile_lambda'),
-      environment: {
-        USERS_TABLE_NAME: users_table.tableName,
-        BUCKET_NAME: bucket.bucketName
-      },
-      role: labRole,                                                               
-    });
-    // create lambda for get a list of all users
-    const GetOtherUsersLambda = new cdk.aws_lambda.Function(this, 'GetOtherUsersHandler', { 
-      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'getOtherUsers.handler',
-      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getOtherUsers_lambda'),
-      environment: {
-        USERS_TABLE_NAME: users_table.tableName
-      },
-      role: labRole,
-    });
+    //                                                                                                              //
+    // create lambda for upload user profile by userID (return preSignUrl for put command)                          //
+    const UploadProfileLambda = new cdk.aws_lambda.Function(this, 'UploadProfileHandler', {                         //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'uploadProfile.handler',                                                                             //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\UploadProfile_lambda'),                                         //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        BUCKET_NAME: bucket.bucketName                                                                              //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
+    // create lambda for get a list of all users                                                                    //
+    const GetOtherUsersLambda = new cdk.aws_lambda.Function(this, 'GetOtherUsersHandler', {                         //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'getOtherUsers.handler',                                                                             //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getOtherUsers_lambda'),                                         //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName                                                                     //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
+    // lambdas for distribution notices
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create lambda for subscribe                                                                                  //
+    const SubscribeLambda = new cdk.aws_lambda.Function(this, 'SubscribeHandler', {                                 //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'subscribe.handler',                                                                                 //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\subscribe_lambda'),                                             //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        TOPICS_TABLE_NAME: topics_table.tableName                                                                   //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -137,34 +154,56 @@ export class FinalProjectStack extends cdk.Stack {
       description: 'User System API for login and register users',                                                  //
       defaultCorsPreflightOptions: {                                                                                //
         allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,                                                          //
-        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
-        allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key', 'X-Amz-Security-Token'] // Allow necessary headers
+        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,                                                          //
+        allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key', 'X-Amz-Security-Token']          //
       }                                                                                                             //
     });                                                                                                             //
     //                                                                                                              //
     // add lambdas to the user system api gateway                                                                   //
     const register = user_system_api.root.addResource('register');                                                  //
-    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));
+    register.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UserRegisterLambda));                       //
     const userDetails = user_system_api.root.addResource('userDetails');                                            //
     userDetails.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetUserLambda));                          //
     const deleteUser = user_system_api.root.addResource('deleteUser');                                              //
-    deleteUser.addMethod('DELETE', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));                       //
-    const uploadProfile = user_system_api.root.addResource('uploadProfile');                                        
-    uploadProfile.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(UploadProfileLambda), {
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Origin': true,
-            'method.response.header.Access-Control-Allow-Methods': true,
-            'method.response.header.Access-Control-Allow-Headers': true,
-          }
-        }
-      ]
-    });
-    const otherUsers = user_system_api.root.addResource('otherUsers');
-    otherUsers.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetOtherUsersLambda));
+    deleteUser.addMethod('DELETE', new cdk.aws_apigateway.LambdaIntegration(DeleteUserLambda));                     //
+    const uploadProfile = user_system_api.root.addResource('uploadProfile');                                        //
+    uploadProfile.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(UploadProfileLambda), {                 //
+      methodResponses: [                                                                                            //
+        {                                                                                                           //
+          statusCode: '200',                                                                                        //
+          responseParameters: {                                                                                     //
+            'method.response.header.Access-Control-Allow-Origin': true,                                             //
+            'method.response.header.Access-Control-Allow-Methods': true,                                            //
+            'method.response.header.Access-Control-Allow-Headers': true,                                            //
+          }                                                                                                         //
+        }                                                                                                           //
+      ]                                                                                                             //
+    });                                                                                                             //
+    const otherUsers = user_system_api.root.addResource('otherUsers');                                              //
+    otherUsers.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetOtherUsersLambda));                     //
     /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
+    // API for distribution messages
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create REST API Gateway for the user system                                                                  //
+    const distribution_msg_api = new cdk.aws_apigateway.RestApi(this, 'DistributionMsgApi', {                       //
+      restApiName: 'DistributionMsgApi',                                                                            //
+      description: 'API for distributing messages between users and their subscribers',                             //
+      defaultCorsPreflightOptions: {                                                                                //
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,                                                          //
+        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,                                                          //
+        allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key', 'X-Amz-Security-Token']          //
+      }                                                                                                             //
+    });                                                                                                             //
+    //                                                                                                              //
+    // add lambdas to the user system api gateway                                                                   //
+    const subscribe = distribution_msg_api.root.addResource('subscribe');
+    subscribe.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(SubscribeLambda));
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
 
     
     // // curl https://kbjilkhg8l.execute-api.us-east-1.amazonaws.com/prod/assets/test/sample_image.jpg
