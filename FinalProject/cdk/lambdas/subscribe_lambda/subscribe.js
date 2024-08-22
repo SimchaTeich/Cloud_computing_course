@@ -76,13 +76,21 @@ exports.handler = async (event) => {
     const publisherUserID = response.Items.map(i => unmarshall(i))[0].userID;
     //------------------------------------------------------------------------------------------
 
+
+    //--------------------------------------------------
+    // exstract sns topic ARN by publisher-UserID
+    response = await docClient.send(new GetCommand({
+        TableName: process.env.TOPICS_TABLE_NAME,
+        Key: {userID: publisherUserID}
+    }));
+    const topicArn = response.Item.topicArn;
+
+
     return {
         statusCode: 200,
         body: JSON.stringify({
-            subscriberUserID: userID,
-            subscriberEmail: subscriberEmail,
-            publisherUserID: publisherUserID,
-            publisherEmail: publisherEmail
+            topicArn: topicArn,
+            subscriberEmail: subscriberEmail
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -91,10 +99,6 @@ exports.handler = async (event) => {
             'Access-Control-Allow-Headers': 'Content-Type'
         }
     };
-
-
-    //--------------------------------------------------
-    // exstract ARN of sns topic, witch the userEmail subscribe to
     //--------------------------------------------------
 
 
