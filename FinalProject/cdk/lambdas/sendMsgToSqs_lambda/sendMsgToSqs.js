@@ -17,7 +17,7 @@ const client = new SQSClient();
 * function for sending msg into sqs
 * input: sqs-url, publisher-usserID, subject (email title) & body (the actual message)
 */
-async function send2SQS(publisherUserID, subject, body) {
+async function send2SQS(sqsURL, publisherUserID, subject, body) {
     var params = {
         MessageAttributes: {
             publisherUserID: {
@@ -30,7 +30,7 @@ async function send2SQS(publisherUserID, subject, body) {
           }
         },
         MessageBody: body, // from post parameters
-        QueueUrl: "https://sqs.us-east-1.amazonaws.com/160844318631/FinalProjectStack-distributionMsgSqsBD9908DC-FakEnFj0U5FX" // from env
+        QueueUrl: sqsURL
     };
 
     await client.send(new SendMessageCommand(params));
@@ -40,7 +40,9 @@ async function send2SQS(publisherUserID, subject, body) {
 exports.handler = async (event) => {
     console.log(event);
 
-    await send2SQS("67c6f532-daf8-484f-abdc-d31966bfa65d", "subject-from-lambda", "body-form-lambda");
+    const sqsURL = process.env.SQS_URL;
+
+    await send2SQS(sqsURL, "67c6f532-daf8-484f-abdc-d31966bfa65d", "subject-from-lambda", "body-form-lambda");
 
     return {
         statusCode: 200,
