@@ -1,9 +1,14 @@
+/************************************************************************************************************************************
+* RESOURCES:                                                                                                                        *
+* subscribe: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/sns-examples-subscribing-unubscribing-topics.html    *                                                                                                      *
+* subscribe email example: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_sns_code_examples.html      *
+*************************************************************************************************************************************/
+
 // Imports
 const { DynamoDBClient, QueryCommand }       = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
 const { unmarshall }                         = require("@aws-sdk/util-dynamodb");
-const { SNSClient, SubscribeCommand }       = require("@aws-sdk/client-sns");
-const { resolve } = require("path");
+const { SNSClient, SubscribeCommand }        = require("@aws-sdk/client-sns");
 
 
 // DynamoDB clients
@@ -111,12 +116,13 @@ exports.handler = async (event) => {
 
     //--------------------------------------------------
     // subscribe the subscriber Email (user email) to topic of publisher
-    const res = await subscribe(topicArn, subscriberEmail); 
+    await subscribe(topicArn, subscriberEmail); 
     //--------------------------------------------------
 
+    
     return {
         statusCode: 200,
-        body: JSON.stringify(res),
+        body: JSON.stringify({msg: "Subscribed successfully, check your email"}),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
