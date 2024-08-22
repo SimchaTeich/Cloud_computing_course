@@ -1,7 +1,16 @@
+/************************************************************************************************************************************
+* RESOURCES:                                                                                                                        *
+* sqs creation: https://www.youtube.com/watch?v=blnjyseXQVo                                                                         *
+* connect lambda triger by sqs: https://www.alexkates.dev/blog/how-to-trigger-an-aws-lambda-function-from-an-sqs-message            *
+* 
+*************************************************************************************************************************************/
+
+// Imports
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as sqs from "aws-cdk-lib/aws-sqs";
 
 export class FinalProjectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -60,6 +69,17 @@ export class FinalProjectStack extends cdk.Stack {
     // Output s3 bucket name                                                                                        //
     new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });                                            //
     const s3Integration = this.createS3Integration(bucket, labRole);                                                //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
+    // sqs for distribution messages
+    /*--------------------------------------------------------------------------------------------------------------*/
+    const queue = new sqs.Queue(this, 'distributionMsgSqs', {
+      visibilityTimeout: cdk.Duration.seconds(300)
+    });
+    // Output sqs queue name
+    new cdk.CfnOutput(this, 'sqs-name', { value: queue.queueName });
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -142,6 +162,19 @@ export class FinalProjectStack extends cdk.Stack {
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
+    //                                                                                                              //
+    // create lambda for publish message from the queue                                                             //
+    const PublishFromSQSLambda = new cdk.aws_lambda.Function(this, 'PublishFromSQSHandler', {                       //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'publishFromSqs.handler',                                                                            //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\publishFromSqs_lambda'),                                        //
+      environment: {                                                                                                //
+        TOPICS_TABLE_NAME: topics_table.tableName                                                                   //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
+    // connect it to the sqs queue
+    PublishFromSQSLambda.addEventSource(new cdk.aws_lambda_event_sources.SqsEventSource(queue));
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
