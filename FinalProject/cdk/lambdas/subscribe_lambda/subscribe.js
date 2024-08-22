@@ -2,12 +2,34 @@
 const { DynamoDBClient, QueryCommand }       = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
 const { unmarshall }                         = require("@aws-sdk/util-dynamodb");
-//const { subscribe } = require("diagnostics_channel");
+const { SNSClient, SubscribeCommand }       = require("@aws-sdk/client-sns");
+const { resolve } = require("path");
 
 
 // DynamoDB clients
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
+
+
+// sns client
+const snsClient = new SNSClient();
+
+
+/*
+* function subscribe email to sns topic
+*/
+async function subscribe(topicArn, email)
+{
+    const response = await snsClient.send(
+        new SubscribeCommand({
+          Protocol: "email",
+          TopicArn: topicArn,
+          Endpoint: email,
+        }),
+    );
+
+    return response;
+}
 
 
 exports.handler = async (event) => {
@@ -84,33 +106,17 @@ exports.handler = async (event) => {
         Key: {userID: publisherUserID}
     }));
     const topicArn = response.Item.topicArn;
+    //--------------------------------------------------
 
+
+    //--------------------------------------------------
+    // subscribe the subscriber Email (user email) to topic of publisher
+    const res = await subscribe(topicArn, subscriberEmail); 
+    //--------------------------------------------------
 
     return {
         statusCode: 200,
-        body: JSON.stringify({
-            topicArn: topicArn,
-            subscriberEmail: subscriberEmail
-        }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
-        }
-    };
-    //--------------------------------------------------
-
-
-    //--------------------------------------------------
-    // subscribe the userEmail to ARN topic
-    //--------------------------------------------------
-
-
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify({msg:"wow"}),
+        body: JSON.stringify(res),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, OPTIONS',
