@@ -1,6 +1,8 @@
 // Imports
 const { DynamoDBClient, QueryCommand }       = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
+const { unmarshall }                         = require("@aws-sdk/util-dynamodb");
+//const { subscribe } = require("diagnostics_channel");
 
 
 // DynamoDB clients
@@ -26,8 +28,8 @@ exports.handler = async (event) => {
         TableName: process.env.USERS_TABLE_NAME,
         Key: {userID: userID}
     };
-    const response1 = await docClient.send(new GetCommand(params));
-    const item = response1.Item;
+    let response = await docClient.send(new GetCommand(params));
+    let item = response.Item;
     if (!item) {
         return {
             statusCode: 404,
@@ -40,11 +42,13 @@ exports.handler = async (event) => {
                 }
         };
     }
+    // else, exstract email to be subscribe
+    const subscriberEmail = response.Item.email;
     //--------------------------------------------------
 
 
     //------------------------------------------------------------------------------------------
-    // check if publisher is exist by email
+    // check if publisher doesnt exist by publisher email
     const quarycommand = new QueryCommand({
         TableName: process.env.USERS_TABLE_NAME,
         IndexName: 'emailIndex',
@@ -54,8 +58,8 @@ exports.handler = async (event) => {
         },
     });
 
-    const response2 = await client.send(quarycommand);
-    if (response2.Count == 0)
+    response = await client.send(quarycommand);
+    if (response.Count == 0)
     {
         return {
             statusCode: 404,
@@ -68,17 +72,25 @@ exports.handler = async (event) => {
             }
         };
     }
+    // else, exstract userID of publisher
+    const publisherUserID = response.Items.map(i => unmarshall(i))[0].userID;
     //------------------------------------------------------------------------------------------
 
-
-    //--------------------------------------------------
-    // check if email of publisher is exist
-    //--------------------------------------------------
-
-
-    //--------------------------------------------------
-    // exstract userEmail for subscribe from userID
-    //--------------------------------------------------
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            subscriberUserID: userID,
+            subscriberEmail: subscriberEmail,
+            publisherUserID: publisherUserID,
+            publisherEmail: publisherEmail
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    };
 
 
     //--------------------------------------------------
