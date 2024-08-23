@@ -6,11 +6,18 @@
 *************************************************************************************************************************************/
 
 // Imports
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
 const { SQSClient, SendMessageCommand  } = require("@aws-sdk/client-sqs");
 
 
+// DynamoDB clients
+const client = new DynamoDBClient();
+const docClient = DynamoDBDocumentClient.from(client);
+
+
 // SQS clients
-const client = new SQSClient();
+const sqs_client = new SQSClient();
 
 
 /*
@@ -18,7 +25,7 @@ const client = new SQSClient();
 * input: sqs-url, publisher-usserID, subject (email title) & body (the actual message)
 */
 async function send2SQS(sqsURL, publisherUserID, subject, body) {
-    await client.send(new SendMessageCommand({
+    await sqs_client.send(new SendMessageCommand({
         MessageAttributes: {
             publisherUserID: {
                 DataType: "String",
@@ -29,7 +36,7 @@ async function send2SQS(sqsURL, publisherUserID, subject, body) {
                 StringValue: subject
             }
         },
-        MessageBody: body + "\n\n-----\nFacebook friend Idan sent you a message!",
+        MessageBody: body,
         QueueUrl: sqsURL
     }));
 }
@@ -42,15 +49,29 @@ exports.handler = async (event) => {
     // exstract post parameters data
     const data = JSON.parse(event.body);
     
-    const publisherUserID = data.userID;
+    const userID = data.userID;
     const subject = data.subject;
     const body = data.body;
     //--------------------------------------------------
 
+
+    //--------------------------------------------------
+    // get the publisher user name
+    const response = await docClient.send(new GetCommand({
+        TableName: process.env.USERS_TABLE_NAME,
+        Key: {userID: userID}
+    }));
+    const username = response.Item.username;
+    //--------------------------------------------------
+
+
+    // get the sqs url
     const sqsURL = process.env.SQS_URL;
 
-    await send2SQS(sqsURL, publisherUserID, subject, body);
 
+    await send2SQS(sqsURL, userID, subject, body + `\n\n-----\nFacebook friend ${username} sent you a message!`);
+
+    
     return {
         statusCode: 200,
         body: JSON.stringify({msg: "The message was sent successfully"}),
