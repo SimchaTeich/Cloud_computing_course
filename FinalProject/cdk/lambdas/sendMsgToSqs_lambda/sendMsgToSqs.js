@@ -69,9 +69,9 @@ exports.handler = async (event) => {
     const sqsURL = process.env.SQS_URL;
 
 
-    await send2SQS(sqsURL, userID, subject, body + `\n\n-----\nFacebook friend ${username} sent you a message!`);
+    await send2SQS(sqsURL, userID, subject, body + `\n\n-----\nFakebook friend ${username} sent you a message!`);
 
-    
+
     return {
         statusCode: 200,
         body: JSON.stringify({msg: "The message was sent successfully"}),
