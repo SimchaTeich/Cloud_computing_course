@@ -96,7 +96,7 @@ async function getImage(postID) {
 /**
 * Function return tag for image
 */
-async function getTags(postID) {
+async function getTags(postID) { 
     const command = new DetectLabelsCommand({
         Image: {
             S3Object: {
@@ -112,7 +112,7 @@ async function getTags(postID) {
         return response.Labels.map((lable) => lable.Name);
     } catch (error) {
         console.log(error);
-        return 'error';
+        return [];
     }
 }
 
@@ -162,6 +162,7 @@ exports.handler = async (event) => {
     // scan posts table
     const response2 = await docClient.send(new ScanCommand({
         TableName: process.env.POSTS_TABLE_NAME,
+        Limit: 5
     }));
     const items = response2.Items;
     const count = response2.Count;
