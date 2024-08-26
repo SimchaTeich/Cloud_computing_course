@@ -247,6 +247,7 @@ export class FinalProjectStack extends cdk.Stack {
         POSTS_BUCKET_NAME: post_bucket.bucketName                                                                   //
       },                                                                                                            //
       role: labRole,                                                                                                //
+      timeout: cdk.Duration.seconds(30)                                                                             //
     });                                                                                                             //
     //                                                                                                              //
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -331,7 +332,7 @@ export class FinalProjectStack extends cdk.Stack {
     const uploadPost = posts_api.root.addResource('uploadPost');                                                    //
     uploadPost.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UploadPostLambda));                       //
     const viewPosts = posts_api.root.addResource('viewPosts');                                                      //
-    viewPosts.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetPostsLambda, {timeout: cdk.Duration.seconds(15)}));                       //
+    viewPosts.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetPostsLambda));                           //
     /*--------------------------------------------------------------------------------------------------------------*/
   }
 
