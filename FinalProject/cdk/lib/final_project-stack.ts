@@ -223,11 +223,24 @@ export class FinalProjectStack extends cdk.Stack {
 
     // lambdas for posts (post in social network)
     /*--------------------------------------------------------------------------------------------------------------*/
-    // create lambda for subscribe                                                                                  //
+    // create lambda for upload post                                                                                //
     const UploadPostLambda = new cdk.aws_lambda.Function(this, 'UploadPostHandler', {                               //
       runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
       handler: 'uploadPost.handler',                                                                                //
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\uploadPost_lambda'),                                            //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        POSTS_TABLE_NAME: post_table.tableName,                                                                     //
+        POSTS_BUCKET_NAME: post_bucket.bucketName                                                                   //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
+    //                                                                                                              //
+    // create lambda for get all posts                                                                              //
+    const GetPostsLambda = new cdk.aws_lambda.Function(this, 'GetPostsHandler', {                                   //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'getPostsList.handler',                                                                              //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\getPostsList_lambda'),                                          //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
         POSTS_TABLE_NAME: post_table.tableName,                                                                     //
@@ -317,9 +330,12 @@ export class FinalProjectStack extends cdk.Stack {
     // add lambdas to the api                                                                                       //
     const uploadPost = posts_api.root.addResource('uploadPost');                                                    //
     uploadPost.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UploadPostLambda));                       //
+    const viewPosts = posts_api.root.addResource('viewPosts');                                                    //
+    viewPosts.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetPostsLambda));                       //
     /*--------------------------------------------------------------------------------------------------------------*/
   }
 
+  
   private createS3Integration(assetsBucket: cdk.aws_s3.IBucket, executeRole: cdk.aws_iam.IRole) {
     return new cdk.aws_apigateway.AwsIntegration({
       service: "s3",
