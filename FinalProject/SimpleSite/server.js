@@ -29,6 +29,11 @@ app.get('/uploadProfile', (req, res) => {
 });
 
 
+app.get('/uploadPost', (req, res) => {
+    res.sendFile(__dirname + '/posts/static/uploadPost.html');
+});
+
+
 app.get('/subscribe', (req, res) => {
     res.sendFile(__dirname + '/subscriptions/static/subscribe.html');
 });
