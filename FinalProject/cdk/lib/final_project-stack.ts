@@ -84,13 +84,32 @@ export class FinalProjectStack extends cdk.Stack {
 
 
 
+    // s3 for posts
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // add s3 bucket to the api gateway                                                                             //
+    const post_bucket = new s3.Bucket(this, 'PostBucket', {                                                         //
+      removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,                                                  //
+      cors: [                                                                                                       //
+        {                                                                                                           //
+          allowedOrigins: ['*'], // Adjust this to your specific origins                                            //
+          allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT],                                                 //
+          allowedHeaders: ['*'],                                                                                    //
+        },                                                                                                          //
+      ],                                                                                                            //
+    });                                                                                                             //
+    // Output s3 bucket name                                                                                        //
+    new cdk.CfnOutput(this, 'posts-BucketName', { value: post_bucket.bucketName });                                 //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
     // sqs for distribution messages
     /*--------------------------------------------------------------------------------------------------------------*/
-    const queue = new sqs.Queue(this, 'distributionMsgSqs', {
-      visibilityTimeout: cdk.Duration.seconds(300)
-    });
-    // Output sqs queue name
-    new cdk.CfnOutput(this, 'sqs-name', { value: queue.queueName });
+    const queue = new sqs.Queue(this, 'distributionMsgSqs', {                                                       //
+      visibilityTimeout: cdk.Duration.seconds(300)                                                                  //
+    });                                                                                                             //
+    // Output sqs queue name                                                                                        //
+    new cdk.CfnOutput(this, 'sqs-name', { value: queue.queueName });                                                //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -211,7 +230,8 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\uploadPost_lambda'),                                            //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
-        POSTS_TABLE_NAME: post_table.tableName                                                                      //
+        POSTS_TABLE_NAME: post_table.tableName,                                                                     //
+        POSTS_BUCKET_NAME: post_bucket.bucketName                                                                   //
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
