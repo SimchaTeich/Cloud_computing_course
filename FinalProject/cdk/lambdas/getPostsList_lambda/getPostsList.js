@@ -2,7 +2,7 @@
 * RESOURCES:                                                                                                                        *
 * scanCommand example: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/ScanCommand/                  *
 * add element to json arr: https://www.quora.com/How-do-you-add-elements-to-a-JSON-Array                                            *
-* 
+* rekognition Detect Lables: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/rekognition/command/DetectLabelsCommand/ *
 *************************************************************************************************************************************/
 
 // Imports
