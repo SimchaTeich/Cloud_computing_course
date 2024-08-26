@@ -1,26 +1,58 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Welcome page</title>
-    </head>
-    <body>
-        <!-- link to page -->
-        <a href="/register">Register</a>
-        <br>
-        <a href="/userDetails">userDetails</a>
-        <br>
-        <a href="/uploadProfile">uploadProfile</a>
-        <br>
-        <a href="/uploadPost">uploadPost</a>
-        <br>
-        <a href="/viewPosts">viewPosts</a>
-        <br>
-        <a href="/subscribe">subscribe</a>
-        <br>
-        <a href="/msg2MySubscribers">msg2MySubscribers</a>
-        <br>
-        <a href="/deleteUser">deleteUser</a>
-        <br>
-
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Fakebook</h1>
+        <ul>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/userDetails">User Details</a></li>
+            <li><a href="/uploadProfile">Upload Profile</a></li>
+            <li><a href="/uploadPost">Upload Post</a></li>
+            <li><a href="/viewPosts">View Posts</a></li>
+            <li><a href="/subscribe">Subscribe</a></li>
+            <li><a href="/msg2MySubscribers">Message My Subscribers</a></li>
+            <li><a href="/deleteUser">Delete User</a></li>
+        </ul>
+    </div>
+</body>
 </html>
