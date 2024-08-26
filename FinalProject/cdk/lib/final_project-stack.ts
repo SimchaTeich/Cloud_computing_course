@@ -53,10 +53,21 @@ export class FinalProjectStack extends cdk.Stack {
 
 
 
+    // post table
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create the post table                                                                                        //
+    const post_table = new cdk.aws_dynamodb.Table(this, 'posts', {                                                  //
+      partitionKey: {name: 'postID', type: cdk.aws_dynamodb.AttributeType.STRING},                                  //
+      sortKey: {name: 'userID', type: cdk.aws_dynamodb.AttributeType.STRING}                                        //
+    });                                                                                                             //                                                                                                            //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
     // s3 for users
     /*--------------------------------------------------------------------------------------------------------------*/
     // add s3 bucket proxy to the api gateway                                                                       //
-    const bucket = new s3.Bucket(this, 'HelloBucket', {                                                             //
+    const user_bucket = new s3.Bucket(this, 'UserBucket', {                                                         //
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,                                                  //
       cors: [                                                                                                       //
         {                                                                                                           //
@@ -67,8 +78,8 @@ export class FinalProjectStack extends cdk.Stack {
       ],                                                                                                            //
     });                                                                                                             //
     // Output s3 bucket name                                                                                        //
-    new cdk.CfnOutput(this, 'BucketName', { value: bucket.bucketName });                                            //
-    const s3Integration = this.createS3Integration(bucket, labRole);                                                //
+    new cdk.CfnOutput(this, 'BucketName', { value: user_bucket.bucketName });                                       //
+    const s3Integration = this.createS3Integration(user_bucket, labRole);                                           //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -94,7 +105,7 @@ export class FinalProjectStack extends cdk.Stack {
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
         TOPICS_TABLE_NAME: topics_table.tableName,                                                                  //
-        BUCKET_NAME: bucket.bucketName                                                                              //
+        BUCKET_NAME: user_bucket.bucketName                                                                         //
       },                                                                                                            //
       role: labRole, // important for the lab so the cdk will not create a new role                                 //
     });                                                                                                             //
@@ -106,7 +117,7 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\getUser_lambda'),                                               //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
-        BUCKET_NAME: bucket.bucketName                                                                              //
+        BUCKET_NAME: user_bucket.bucketName                                                                         //
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
@@ -119,7 +130,7 @@ export class FinalProjectStack extends cdk.Stack {
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
         TOPICS_TABLE_NAME: topics_table.tableName,                                                                  //
-        BUCKET_NAME: bucket.bucketName                                                                              //
+        BUCKET_NAME: user_bucket.bucketName                                                                         //
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
@@ -131,7 +142,7 @@ export class FinalProjectStack extends cdk.Stack {
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\UploadProfile_lambda'),                                         //
       environment: {                                                                                                //
         USERS_TABLE_NAME: users_table.tableName,                                                                    //
-        BUCKET_NAME: bucket.bucketName                                                                              //
+        BUCKET_NAME: user_bucket.bucketName                                                                         //
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
@@ -149,7 +160,7 @@ export class FinalProjectStack extends cdk.Stack {
 
 
 
-    // lambdas for distribution notices
+    // lambdas for distribution messeages to subscribers
     /*--------------------------------------------------------------------------------------------------------------*/
     // create lambda for subscribe                                                                                  //
     const SubscribeLambda = new cdk.aws_lambda.Function(this, 'SubscribeHandler', {                                 //
@@ -182,11 +193,29 @@ export class FinalProjectStack extends cdk.Stack {
       handler: 'sendMsgToSqs.handler',                                                                              //
       code: cdk.aws_lambda.Code.fromAsset('lambdas\\sendMsgToSqs_lambda'),                                          //
       environment: {                                                                                                //
-        USERS_TABLE_NAME: users_table.tableName,                                                                  //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
         SQS_URL: queue.queueUrl                                                                                     //
       },                                                                                                            //
       role: labRole,                                                                                                //
     });                                                                                                             //
+    /*--------------------------------------------------------------------------------------------------------------*/
+
+
+
+    // lambdas for posts (post in social network)
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create lambda for subscribe                                                                                  //
+    const UploadPostLambda = new cdk.aws_lambda.Function(this, 'UploadPostHandler', {                               //
+      runtime: cdk.aws_lambda.Runtime.NODEJS_LATEST,                                                                //
+      handler: 'uploadPost.handler',                                                                                //
+      code: cdk.aws_lambda.Code.fromAsset('lambdas\\uploadPost_lambda'),                                            //
+      environment: {                                                                                                //
+        USERS_TABLE_NAME: users_table.tableName,                                                                    //
+        POSTS_TABLE_NAME: post_table.tableName                                                                      //
+      },                                                                                                            //
+      role: labRole,                                                                                                //
+    });                                                                                                             //
+    //                                                                                                              //
     /*--------------------------------------------------------------------------------------------------------------*/
 
 
@@ -252,9 +281,23 @@ export class FinalProjectStack extends cdk.Stack {
 
 
 
-    
-    // // curl https://kbjilkhg8l.execute-api.us-east-1.amazonaws.com/prod/assets/test/sample_image.jpg
-    //this.addAssetsEndpoint(user_system_api, s3Integration);
+    // API for handle posts (for social network)
+    /*--------------------------------------------------------------------------------------------------------------*/
+    // create REST API Gateway for the posts API                                                                    //
+    const posts_api = new cdk.aws_apigateway.RestApi(this, 'PostsAPI', {                                            //
+      restApiName: 'PostsAPI',                                                                                      //
+      description: 'API for posts (social network)',                                                                //
+      defaultCorsPreflightOptions: {                                                                                //
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,                                                          //
+        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,                                                          //
+        allowHeaders: ['Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key', 'X-Amz-Security-Token']          //
+      }                                                                                                             //
+    });                                                                                                             //
+    //                                                                                                              //
+    // add lambdas to the api                                                                                       //
+    const uploadPost = posts_api.root.addResource('uploadPost');                                                    //
+    uploadPost.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UploadPostLambda));                       //
+    /*--------------------------------------------------------------------------------------------------------------*/
   }
 
   private createS3Integration(assetsBucket: cdk.aws_s3.IBucket, executeRole: cdk.aws_iam.IRole) {
@@ -280,30 +323,4 @@ export class FinalProjectStack extends cdk.Stack {
       },
     });
   }
-
-  // private addAssetsEndpoint(
-  //   apiGateway: cdk.aws_apigateway.RestApi,
-  //   s3Integration: cdk.aws_apigateway.AwsIntegration
-  // ) {
-  //   apiGateway.root
-  //     .addResource("assets")
-  //     .addResource("{folder}")
-  //     .addResource("{key}")
-  //     .addMethod("GET", s3Integration, {
-  //       methodResponses: [
-  //         {
-  //           statusCode: "200",
-  //           responseParameters: {
-  //             "method.response.header.Content-Type": true,
-  //           },
-  //         },
-  //       ],
-  //       requestParameters: {
-  //         "method.request.path.folder": true,
-  //         "method.request.path.key": true,
-  //         "method.request.header.Content-Type": true,
-  //       },
-  //       apiKeyRequired: false,
-  //     });
-  // }
 }
