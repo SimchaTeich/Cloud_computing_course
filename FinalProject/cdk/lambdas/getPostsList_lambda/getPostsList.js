@@ -160,8 +160,7 @@ exports.handler = async (event) => {
     //--------------------------------------------------
     // scan posts table
     const response2 = await docClient.send(new ScanCommand({
-        TableName: process.env.POSTS_TABLE_NAME,
-        //Limit: 2
+        TableName: process.env.POSTS_TABLE_NAME
     }));
     const items = response2.Items;
     const count = response2.Count;
