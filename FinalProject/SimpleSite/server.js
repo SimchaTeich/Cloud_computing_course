@@ -34,6 +34,11 @@ app.get('/uploadPost', (req, res) => {
 });
 
 
+app.get('/viewPosts', (req, res) => {
+    res.sendFile(__dirname + '/posts/static/viewPosts.html');
+});
+
+
 app.get('/subscribe', (req, res) => {
     res.sendFile(__dirname + '/subscriptions/static/subscribe.html');
 });
