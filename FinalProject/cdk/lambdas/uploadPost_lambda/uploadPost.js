@@ -65,7 +65,7 @@ exports.handler = async (event) => {
     }));
     if (!response.Item) {
         return {
-            statusCode: 404,
+            statusCode: 400,
             body: JSON.stringify({error: "UserID doesn't exist"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
