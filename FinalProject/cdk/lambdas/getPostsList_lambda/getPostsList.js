@@ -106,12 +106,11 @@ async function getTags(postID) {
         }
     });
     
-    let response;
+    let response = [];
     try {
         response = await rekoClient.send(command);
         return response.Labels.map((lable) => lable.Name);
     } catch (error) {
-        console.log(error);
         return [];
     }
 }
@@ -162,7 +161,7 @@ exports.handler = async (event) => {
     // scan posts table
     const response2 = await docClient.send(new ScanCommand({
         TableName: process.env.POSTS_TABLE_NAME,
-        Limit: 5
+        Limit: 2
     }));
     const items = response2.Items;
     const count = response2.Count;

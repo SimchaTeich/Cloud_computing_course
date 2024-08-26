@@ -330,12 +330,12 @@ export class FinalProjectStack extends cdk.Stack {
     // add lambdas to the api                                                                                       //
     const uploadPost = posts_api.root.addResource('uploadPost');                                                    //
     uploadPost.addMethod('POST', new cdk.aws_apigateway.LambdaIntegration(UploadPostLambda));                       //
-    const viewPosts = posts_api.root.addResource('viewPosts');                                                    //
-    viewPosts.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetPostsLambda));                       //
+    const viewPosts = posts_api.root.addResource('viewPosts');                                                      //
+    viewPosts.addMethod('GET', new cdk.aws_apigateway.LambdaIntegration(GetPostsLambda, {timeout: cdk.Duration.seconds(15)}));                       //
     /*--------------------------------------------------------------------------------------------------------------*/
   }
 
-  
+
   private createS3Integration(assetsBucket: cdk.aws_s3.IBucket, executeRole: cdk.aws_iam.IRole) {
     return new cdk.aws_apigateway.AwsIntegration({
       service: "s3",
