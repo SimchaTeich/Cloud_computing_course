@@ -123,7 +123,7 @@ exports.handler = async (event) => {
     // exstract userID
     if (event.queryStringParameters == null || !event.queryStringParameters.hasOwnProperty('userID')) {
         return {
-            statusCode: 404,
+            statusCode: 400,
             body: JSON.stringify({error: "userID is missing"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -145,7 +145,7 @@ exports.handler = async (event) => {
     const item = response1.Item;
     if (!item) {
         return {
-            statusCode: 404,
+            statusCode: 400,
             body: JSON.stringify({error: "userID doesnt exist"}),
             headers: {
                 'Access-Control-Allow-Origin': '*',
