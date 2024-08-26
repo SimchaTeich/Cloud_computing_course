@@ -2,6 +2,7 @@
 * RESOURCES:                                                                                                                        *
 * scanCommand example: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/ScanCommand/                  *
 * add element to json arr: https://www.quora.com/How-do-you-add-elements-to-a-JSON-Array                                            *
+* 
 *************************************************************************************************************************************/
 
 // Imports
@@ -9,6 +10,7 @@ const { DynamoDBClient }                                  = require('@aws-sdk/cl
 const { DynamoDBDocumentClient, ScanCommand, GetCommand } = require('@aws-sdk/lib-dynamodb');
 const { S3Client, GetObjectCommand, HeadObjectCommand }   = require("@aws-sdk/client-s3");
 const { getSignedUrl }                                    = require('@aws-sdk/s3-request-presigner');
+const { RekognitionClient, DetectLabelsCommand }          = require("@aws-sdk/client-rekognition");
 
 // DynamoDB clients
 const client = new DynamoDBClient();
@@ -16,6 +18,9 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 // S3 client
 const s3Client = new S3Client();
+
+// Rekognition Client
+const rekoClient = new RekognitionClient({ region: 'us-east-1' });
 
 
 /**
@@ -88,6 +93,30 @@ async function getImage(postID) {
 }
 
 
+/**
+* Function return tag for image
+*/
+async function getTags(postID) {
+    const command = new DetectLabelsCommand({
+        Image: {
+            S3Object: {
+                Bucket: process.env.POSTS_BUCKET_NAME,
+                Name: postID+"/image.png"
+            }
+        }
+    });
+    
+    let response;
+    try {
+        response = await rekoClient.send(command);
+        return response.Labels.map((lable) => lable.Name);
+    } catch (error) {
+        console.log(error);
+        return 'error';
+    }
+}
+
+
 exports.handler = async (event) => {
     console.log(event);
 
@@ -120,7 +149,6 @@ exports.handler = async (event) => {
             statusCode: 404,
             body: JSON.stringify({error: "userID doesnt exist"}),
             headers: {
-                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type'
@@ -149,6 +177,9 @@ exports.handler = async (event) => {
         post["title"]    = item.title;
         post["body"]     = item.body;
         post["image"]    = await getImage(item.postID);
+        if (post["image"].validImage) {
+            post["tags"] = await getTags(item.postID);
+        }
         postsArr.push(post);
     }
     //--------------------------------------------------
