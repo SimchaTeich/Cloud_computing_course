@@ -8,29 +8,43 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
         h1 {
+            text-align: center;
             color: #333;
         }
-        form {
-            margin-bottom: 20px;
-        }
         label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: bold;
         }
         input[type="text"] {
+            width: 100%;
             padding: 8px;
-            width: 200px;
-            margin-right: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
         }
         button {
             padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: #fff;
             cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box; /* Ensures button's width is properly contained */
         }
         button:hover {
             background-color: #0056b3;
@@ -99,12 +113,15 @@
     </style>
 </head>
 <body>
-    <h1>View All Posts</h1>
-    <form id="viewPostsForm">
-        <label for="userID">User ID:</label>
-        <input type="text" id="userID" name="userID" required>
-        <button type="submit">View All Posts</button>
-    </form>
+    <div class="form-container">
+        <h1>View All Posts</h1>
+        <form id="viewPostsForm">
+            <label for="userID">User ID:</label>
+            <input type="text" id="userID" name="userID" required>
+            <button type="submit">View All Posts</button>
+        </form>
+    </div>
+    <br>
     <div id="posts-container" class="posts-container"></div>
     <div id="error-container" class="error-message"></div>
 
@@ -195,3 +212,4 @@
     </script>
 </body>
 </html>
+
