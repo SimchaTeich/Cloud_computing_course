@@ -1,21 +1,110 @@
 <!DOCTYPE html>
 <html>
-    <head>
-       <title>Subscribe Form</title>
-    </head>
-    <body>
-        <h1>Subscribe</h1>
-        <form id="subscribeForm">
-            <label for="userID">userID:</label>
-            <br>
-            <input type="text" id="userID" name="userID" required>
-            <br><br>
-            <button type="submit">View Other User</button>
-        </form>
-        <br><br>
-        <div id="users-list-container"></div>
+<head>
+    <title>Subscribe Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
-    </body>
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .user-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .subscribe-button {
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .subscribe-button:hover {
+            background-color: #218838;
+        }
+
+        .no-users {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <form id="subscribeForm">
+        <h1>Subscribe</h1>
+        <label for="userID">UserID:</label>
+        <input type="text" id="userID" name="userID" required>
+        <button type="submit">View Other Users</button>
+    </form>
+    <br><br>
+    <div id="users-list-container"></div>
+
     <script>
         document.getElementById('subscribeForm').addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -23,7 +112,7 @@
             const userID = document.getElementById('userID').value;
             
             if (!userID) {
-                alert('userID is empty');
+                alert('UserID is empty');
                 return;
             }
             
@@ -40,7 +129,7 @@
                 return;
             }
             else if (data.count == 0) {
-                userButtonsContainer.innerHTML = 'Congratulations! You are the only one on this social network!';
+                userButtonsContainer.innerHTML = '<div class="no-users">Congratulations! You are the only one on this social network!</div>';
                 return;
             }
 
@@ -48,15 +137,17 @@
             data.userList.forEach(user => {
                 // Create a container for each user
                 const userContainer = document.createElement('div');
-                userContainer.style.marginBottom = '10px'; // Add some spacing
+                userContainer.className = 'user-container';
 
                 // Create text for user
                 const userText = document.createElement('span');
-                userText.textContent = `${user.username} (${user.email}): `;
+                userText.className = 'user-text';
+                userText.textContent = `${user.username}`;
 
                 // Create button
                 const button = document.createElement('button');
-                button.textContent = 'subscribe';
+                button.className = 'subscribe-button';
+                button.textContent = 'Subscribe';
                 button.addEventListener('click', async (event) => {
                     event.preventDefault();
 
@@ -65,10 +156,14 @@
                         body: JSON.stringify({
                             userID: userID,
                             publisherEmail: user.email
-                        })
+                        }),
+                        headers: { 'Content-Type': 'application/json' }
                     });
                     const data = await response.json();
                     alert(JSON.stringify(data));
+
+                    // hide the use container after button click
+                    userContainer.style.display = 'none';
                 });
 
                 // Append text and button to the user container
@@ -77,7 +172,9 @@
 
                 // Append the user container to the main container
                 userButtonsContainer.appendChild(userContainer);
+                userButtonsContainer.appendChild(document.createElement('br'));
             });
         });
     </script>
+</body>
 </html>
