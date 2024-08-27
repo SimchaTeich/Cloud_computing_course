@@ -71,7 +71,8 @@ It is described here according to the following parts:
 * POST requests goes through **API Gateway**
 * Lambda create user ID and
     * Inserts user details into `Users` table in **DynamoDB**
-    * Creates an empty folder in the Users bucket in **S3**. The name of the folder is the `User ID` 
+    * Creates an empty folder in the Users bucket in **S3**. The name of the folder is the `User ID`
+    * Creates an **SNS Topic** for each user and saves his `user ID` next to the `Topic ARN` in the DB. This will be discussed later regarding subscriptions.
 
 ![](./readme-pictures/00%20-%20register.jpg)
 
