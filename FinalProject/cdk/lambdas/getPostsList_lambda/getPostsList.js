@@ -65,6 +65,10 @@ async function getUserName(userID) {
         Key: {userID: userID},
         ProjectionExpression: "username",
     }));
+    if (!response.Item)
+    {
+        return "";
+    }
     return response.Item.username;
 }
 
@@ -173,6 +177,10 @@ exports.handler = async (event) => {
     for (const item of items) {
         let post = {};
         post["username"] = await getUserName(item.userID);
+        if (post["username"] == "")
+        {
+            continue;
+        }
         post["title"]    = item.title;
         post["body"]     = item.body;
         post["image"]    = await getImage(item.postID);
