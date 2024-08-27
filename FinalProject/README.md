@@ -59,7 +59,7 @@ It is described here according to the following parts:
 
 **Part B - Special Features**
 * Subscribers:
-    * Register a user as a subscriber to another
+    * Subscribe to another users
     * Distributing a message to my subscribers
 * Tagging posts:
     * Uploading a post to a public wall
@@ -151,3 +151,16 @@ Of course, cases where the user ID does not exist will be handled as in the prev
 I will demonstrate the deletion example at the end of part B. Right now I need Alice for the next examples.
 
 ### Part B - Special Features
+---
+Before detailing this part, I will create some new users. A summary of their important details is detailed in the following table:
+
+| Username   | Mail Address            | User ID                              |
+|------------|-------------------------|--------------------------------------|
+| Alice      | mirog74464@avashost.com | c0cb40f8-f5a1-4468-a91b-f11f75f692ec |
+| Bob        | pemit49373@hapied.com   | 65d79d51-18a0-44f9-a980-49fa5cdf2a38 |
+| Eve        | doseni9596@avashost.com | c0971ac2-e0d6-43dc-bfe1-43b980dc8bbc |
+
+
+
+**Subscribers: subscribe to user**
+
