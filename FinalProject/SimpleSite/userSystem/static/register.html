@@ -8,40 +8,44 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
         }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .form-container {
             max-width: 400px;
             margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
         }
         label {
-            font-weight: bold;
-            margin-top: 10px;
             display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
         input[type="text"], input[type="email"], input[type="password"] {
             width: 100%;
             padding: 8px;
-            margin-top: 5px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             box-sizing: border-box;
         }
         button {
             padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: #fff;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
             width: 100%;
+            box-sizing: border-box;
         }
         button:hover {
             background-color: #0056b3;
@@ -59,20 +63,22 @@
     </style>
 </head>
 <body>
-    <form id="registerForm">
+    <div class="form-container">
         <h1>Register</h1>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="username" required>
+        <form id="registerForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="username" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="username@gmail.com" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="username@gmail.com" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
 
-        <button type="submit">Submit</button>
-        <div id="messageContainer"></div>
-    </form>
+            <button type="submit">Submit</button>
+            <div id="messageContainer"></div>
+        </form>
+    </div>
 
     <script>
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
@@ -103,7 +109,6 @@
                     alert(data.error);
                     return;
                 }
-
                 alert(JSON.stringify(data));
             } catch (error) {
                 messageContainer.innerHTML = `<p class="error-message">${error.message}</p>`;
