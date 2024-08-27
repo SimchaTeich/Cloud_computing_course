@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Subscribe Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
+            background-color: #f4f4f9;
+            margin: 20px;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: auto;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             color: #333;
-        }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: auto;
+            text-align: center;
         }
 
         label {
@@ -35,6 +37,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+            margin-bottom: 16px;
         }
 
         button {
@@ -45,7 +48,8 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         button:hover {
@@ -57,7 +61,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            margin-bottom: 20px; /* Space between user containers */
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -65,9 +69,14 @@
             margin: auto;
         }
 
+        .user-container + .user-container {
+            margin-top: 20px; /* Additional space above each user container */
+        }
+
         .user-text {
             font-size: 16px;
             color: #333;
+            flex: 1; /* Allow user text to take up available space */
         }
 
         .subscribe-button {
@@ -78,11 +87,14 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            width: 120px; /* Fixed width for the button */
+            box-sizing: border-box;
         }
 
         .subscribe-button:hover {
-            background-color: #218838;
+            background-color: #0056b3;
         }
+
 
         .no-users {
             font-size: 18px;
@@ -96,84 +108,91 @@
     </style>
 </head>
 <body>
-    <form id="subscribeForm">
+    <div class="form-container">
         <h1>Subscribe</h1>
-        <label for="userID">UserID:</label>
-        <input type="text" id="userID" name="userID" required>
-        <button type="submit">View Other Users</button>
-    </form>
-    <br><br>
+        <form id="subscribeForm">
+            <label for="userID">UserID:</label>
+            <input type="text" id="userID" name="userID" required>
+            <button type="submit">View Other Users</button>
+        </form>
+    </div>
+    <br>
     <div id="users-list-container"></div>
 
     <script>
         document.getElementById('subscribeForm').addEventListener('submit', async (event) => {
             event.preventDefault();
             
-            const userID = document.getElementById('userID').value;
+            const userID = document.getElementById('userID').value.trim();
             
             if (!userID) {
                 alert('UserID is empty');
                 return;
             }
             
-            const response = await fetch(`https://xueq1x49q1.execute-api.us-east-1.amazonaws.com/prod/otherUsers?userID=${userID}`, {method: 'GET'});
-            const data = await response.json();
-            console.log(data);
+            try {
+                const response = await fetch(`https://xueq1x49q1.execute-api.us-east-1.amazonaws.com/prod/otherUsers?userID=${userID}`, { method: 'GET' });
+                const data = await response.json();
+                
+                // Clear any existing buttons
+                const userButtonsContainer = document.getElementById('users-list-container');
+                userButtonsContainer.innerHTML = '';
 
-            // Clear any existing buttons
-            const userButtonsContainer = document.getElementById('users-list-container');
-            userButtonsContainer.innerHTML = '';
+                if (data.hasOwnProperty('error')) {
+                    alert(data.error);
+                    return;
+                } else if (data.count === 0) {
+                    userButtonsContainer.innerHTML = '<div class="no-users">Congratulations! You are the only one on this social network!</div>';
+                    return;
+                }
 
-            if (data.hasOwnProperty('error')) {
-                alert(data.error);
-                return;
-            }
-            else if (data.count == 0) {
-                userButtonsContainer.innerHTML = '<div class="no-users">Congratulations! You are the only one on this social network!</div>';
-                return;
-            }
+                // Add buttons for each user
+                data.userList.forEach(user => {
+                    // Create a container for each user
+                    const userContainer = document.createElement('div');
+                    userContainer.className = 'user-container';
 
-            // Add buttons for each user
-            data.userList.forEach(user => {
-                // Create a container for each user
-                const userContainer = document.createElement('div');
-                userContainer.className = 'user-container';
+                    // Create text for user
+                    const userText = document.createElement('span');
+                    userText.className = 'user-text';
+                    userText.textContent = `${user.username}`;
 
-                // Create text for user
-                const userText = document.createElement('span');
-                userText.className = 'user-text';
-                userText.textContent = `${user.username}`;
+                    // Create button
+                    const button = document.createElement('button');
+                    button.className = 'subscribe-button';
+                    button.textContent = 'Subscribe';
+                    button.addEventListener('click', async (event) => {
+                        event.preventDefault();
 
-                // Create button
-                const button = document.createElement('button');
-                button.className = 'subscribe-button';
-                button.textContent = 'Subscribe';
-                button.addEventListener('click', async (event) => {
-                    event.preventDefault();
+                        try {
+                            const response = await fetch(`https://ylvil6fkmf.execute-api.us-east-1.amazonaws.com/prod/subscribe`, {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    userID: userID,
+                                    publisherEmail: user.email
+                                }),
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                            const data = await response.json();
+                            alert(JSON.stringify(data));
 
-                    const response = await fetch(`https://ylvil6fkmf.execute-api.us-east-1.amazonaws.com/prod/subscribe`, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            userID: userID,
-                            publisherEmail: user.email
-                        }),
-                        headers: { 'Content-Type': 'application/json' }
+                            // Hide the user container after button click
+                            userContainer.style.display = 'none';
+                        } catch (error) {
+                            alert('An error occurred: ' + error.message);
+                        }
                     });
-                    const data = await response.json();
-                    alert(JSON.stringify(data));
 
-                    // hide the use container after button click
-                    userContainer.style.display = 'none';
+                    // Append text and button to the user container
+                    userContainer.appendChild(userText);
+                    userContainer.appendChild(button);
+
+                    // Append the user container to the main container
+                    userButtonsContainer.appendChild(userContainer);
                 });
-
-                // Append text and button to the user container
-                userContainer.appendChild(userText);
-                userContainer.appendChild(button);
-
-                // Append the user container to the main container
-                userButtonsContainer.appendChild(userContainer);
-                userButtonsContainer.appendChild(document.createElement('br'));
-            });
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
         });
     </script>
 </body>
