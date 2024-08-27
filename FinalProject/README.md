@@ -59,8 +59,38 @@ It is described here according to the following parts:
 
 **Part B - Special features**
 * Subscribers:
-    *   Register one foreigner as a subscriber to another
+    * Register a user as a subscriber to another
     * Distributing a message to my subscribers
 * Tagging posts:
     * Uploading a post to a public wall
     * Viewing all posts on the public wall
+
+### Part A - User system
+---
+**Registration**
+* POST requests goes through **API Gateway**
+* Lambda create user ID and
+    * Inserts user details into `Users` table in **DynamoDB**
+    * Creates an empty folder in the Users bucket in **S3**. The name of the folder is the `User ID` 
+
+![](./readme-pictures/00%20-%20register.jpg)
+
+For example:
+
+![](./readme-pictures/01%20-%20welcome%20page%20register%20button.png)
+
+![](./readme-pictures/02%20-%20register%20page%20alice.png)
+
+After submit:
+![](./readme-pictures/03%20-%20register%20page%20alice.png)
+
+If everything is fine, the user ID will be returned. We will keep it for ourselves so we can work with this user. Of course, in a real case the browser will take care of it, but the purpose of the site is only to demonstrate API usage, so to illustrate a "logged in user", we will send his ID in every request.
+
+Not every registration is valid, for example registering twice with the same email. When we click the button a second time, we will receive the following error returned from the lambda:
+
+![](./readme-pictures/04%20-%20register%20with%20error.png)
+
+Note: all email addresses I will use in all the examples are from [this great service](https://temp-mail.org/en/)
+
+**Uploading a profile picture**
+
