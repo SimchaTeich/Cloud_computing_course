@@ -57,7 +57,7 @@ It is described here according to the following parts:
 * Viewing profile details
 * Deleting a user
 
-**Part B - Special features**
+**Part B - Special Features**
 * Subscribers:
     * Register a user as a subscriber to another
     * Distributing a message to my subscribers
@@ -69,7 +69,9 @@ It is described here according to the following parts:
 ---
 **Registration**
 * POST requests goes through **API Gateway**
-* Lambda create user ID and
+* Lambda does the following:
+    * Checks if user is already exist by email.
+    * If not, create new `User ID`
     * Inserts user details into `Users` table in **DynamoDB**
     * Creates an empty folder in the Users bucket in **S3**. The name of the folder is the `User ID`
     * Creates an **SNS Topic** for each user and saves his `user ID` next to the `Topic ARN` in the DB. This will be discussed later regarding subscriptions.
@@ -96,8 +98,9 @@ Note: all email addresses I will use in all the examples are from [this great se
 **Uploading a profile picture**
 * GET request with `user ID` goes through **API Gateway** to get pre-signed url to PUT requests direct into the **S3** to upload the image.
 * Then, using the url and making the PUT request to upload the image.
+* Lambda checks if the user is exist by ID before the creation of the pre-signed url...
 
-![](./readme-pictures/05%20-%20upload%20profile%20diagram.jpg)
+![](./readme-pictures/05%20-%20upload%20profile%20image%20diagram.jpg)
 
 For example:
 
@@ -116,6 +119,7 @@ And of course, it is not possible to upload a profile picture if the user does n
 **Viewing profile details**
 * GET requests with `user ID` to get the user details & pre-signed url for the profile image.
 * Then, using the url and making the GET request to get the image.
+* Lambda checks if the user is exist by ID before the creation of the pre-signed url...
 * Note: the lambda will not send back the pre-signed url for the image if the user has not uploaded a profile image. In every response of the lambda there is a kind of flag that if its value is True then the pre-signed url is also attached, otherwise it is not attached, and the image will not be displayed in the interface.
 
 ![](./readme-pictures/11%20-%20get%20profile%20details.jpg)
@@ -133,3 +137,17 @@ After clicking, two things happen. The browser will receive a pre-signed url (wi
 Of course, cases where the user ID does not exist will be handled as in the previous cases, so from now on I will not mention this case.
 
 **Deleting a user**
+* DELETE requests with `User ID`
+* Lambda does the following:
+    * Checks if user is already exist.
+    * user details from `Users` **DynamoDB** table
+    * user profile image from `Users` **S3** bucket
+    * user **SNS** topic
+    * all users posts from `posts` **DynamoDB** table
+    * all images of posts of user from `posts` **S3** bucket
+
+![](./readme-pictures/15%20-%20delete%20user%20diagram.jpg)
+
+I will demonstrate the deletion example at the end of part B. Right now I need Alice for the next examples.
+
+### Part B - Special Features
