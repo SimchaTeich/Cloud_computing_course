@@ -93,4 +93,24 @@ Not every registration is valid, for example registering twice with the same ema
 Note: all email addresses I will use in all the examples are from [this great service](https://temp-mail.org/en/)
 
 **Uploading a profile picture**
+* GET request with `user ID` goes through **API Gateway** to get pre-signed url to PUT requests direct into the **S3** to upload the image.
+* Then, using the url and making the PUT request to upload the image.
+
+![](./readme-pictures/05%20-%20upload%20profile%20diagram.jpg)
+
+For example:
+
+![](./readme-pictures/06%20-%20upload%20profile%20picture.png)
+
+Using Alice `User ID`
+![](./readme-pictures/07%20-%20upload%20profile%20picture%20alice.png)
+
+After clicking, two things happen. The browser will receive a pre-signed url to upload the image, then upload it:
+![](./readme-pictures/08%20-%20upload%20profile%20step%201%20presigned%20url.png)
+![](./readme-pictures/09%20-%20upload%20profile%20step%202%20using%20presingned%20url.png)
+
+And of course, it is not possible to upload a profile picture if the user does not exist
+![](./readme-pictures/10%20-%20upload%20profile%20with%20id%20doesnt%20exist.png)
+
+**Viewing profile details**
 
