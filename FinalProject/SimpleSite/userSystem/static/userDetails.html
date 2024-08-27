@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9;
         }
         .form-container {
             max-width: 400px;
@@ -16,6 +17,11 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
         }
         label {
             display: block;
@@ -28,6 +34,7 @@
             margin-bottom: 16px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
         }
         button {
             padding: 10px 15px;
@@ -37,6 +44,8 @@
             color: #fff;
             cursor: pointer;
             font-size: 16px;
+            width: 100%;
+            box-sizing: border-box; /* Ensures button's width is properly contained */
         }
         button:hover {
             background-color: #0056b3;
@@ -45,12 +54,10 @@
             margin-top: 20px;
         }
         .user-info img {
-            max-width: 200px;
+            max-width: 60%;
             height: auto;
-            border-radius: 8px;
-        }
-        .user-info h2 {
-            margin-top: 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         .user-info p {
             margin: 5px 0;
@@ -63,7 +70,7 @@
         <form id="userDetailsForm">
             <label for="userID">User ID:</label>
             <input type="text" id="userID" name="userID" required>
-            <button type="submit">view My Profile</button>
+            <button type="submit">View My Profile</button>
         </form>
         <div class="user-info" id="userInfo" style="display:none;">
             <div id="profileImgContainer" style="display:none;">
@@ -95,7 +102,6 @@
                     alert(data.error);
                     return;
                 }
-                console.log(data);
                 
                 const userInfo = document.getElementById('userInfo');
                 
@@ -106,7 +112,7 @@
                     document.getElementById('password').textContent = userDetails.password;
                     userInfo.style.display = 'block';
                     
-                    if (userDetails.validProfileImg == true) {
+                    if (userDetails.validProfileImg === true) {
                         const profileImgContainer = document.getElementById('profileImgContainer');
                         const profileImg = document.getElementById('profileImg');
                         
