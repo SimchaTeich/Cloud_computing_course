@@ -39,31 +39,45 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
+            justify-content: flex-start;
         }
         .post-container {
             background-color: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            flex: 1 1 calc(33.333% - 15px);
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            width: 300px; /* Fixed width */
+            height: 350px; /* Fixed height */
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
         .post-title {
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1em;
+            margin-bottom: 5px;
         }
         .post-writer {
             color: #555;
             font-style: italic;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .post-body-container {
+            flex: 1; /* Take available space */
+            overflow-y: auto; /* Enable vertical scrolling */
+            display: flex;
+            flex-direction: column;
         }
         .post-body {
-            margin-top: 10px;
-            line-height: 1.6;
+            line-height: 1.4;
+            font-size: 0.9em;
         }
         .post-image {
-            max-width: 100%;
+            max-width: 50%;
             height: auto;
             border-radius: 5px;
+            margin-top: 10px;
         }
         .tags-container {
             margin-top: 10px;
@@ -74,9 +88,9 @@
         .tag {
             background: #007BFF;
             color: white;
-            padding: 3px 7px;
+            padding: 2px 5px;
             border-radius: 3px;
-            font-size: 0.8em;
+            font-size: 0.7em;
         }
         .error-message {
             color: red;
@@ -138,33 +152,38 @@
                     postWriter.textContent = `by ${post.username}`;
                     postContainer.appendChild(postWriter);
 
+                    const postBodyContainer = document.createElement('div');
+                    postBodyContainer.className = 'post-body-container';
+
                     const postBody = document.createElement('div');
                     postBody.className = 'post-body';
                     postBody.textContent = post.body;
-                    postContainer.appendChild(postBody);
+                    postBodyContainer.appendChild(postBody);
 
                     // Add image if available
                     if (post.image && post.image.validImage) {
                         const postImage = document.createElement('img');
                         postImage.className = 'post-image';
                         postImage.src = post.image.imagePreSignedUrl;
-                        postContainer.appendChild(postImage);
-
-                        // Add tags if available
-                        if (post.tags && post.tags.length > 0) {
-                            const tagsContainer = document.createElement('div');
-                            tagsContainer.className = 'tags-container';
-
-                            post.tags.forEach(tag => {
-                                const tagElement = document.createElement('div');
-                                tagElement.className = 'tag';
-                                tagElement.textContent = tag;
-                                tagsContainer.appendChild(tagElement);
-                            });
-
-                            postContainer.appendChild(tagsContainer);
-                        }
+                        postBodyContainer.appendChild(postImage);
                     }
+
+                    // Add tags if available
+                    if (post.tags && post.tags.length > 0) {
+                        const tagsContainer = document.createElement('div');
+                        tagsContainer.className = 'tags-container';
+
+                        post.tags.forEach(tag => {
+                            const tagElement = document.createElement('div');
+                            tagElement.className = 'tag';
+                            tagElement.textContent = tag;
+                            tagsContainer.appendChild(tagElement);
+                        });
+
+                        postBodyContainer.appendChild(tagsContainer);
+                    }
+
+                    postContainer.appendChild(postBodyContainer);
 
                     postsContainer.appendChild(postContainer);
                 });
@@ -176,4 +195,3 @@
     </script>
 </body>
 </html>
-
