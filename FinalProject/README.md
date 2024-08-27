@@ -114,4 +114,22 @@ And of course, it is not possible to upload a profile picture if the user does n
 ![](./readme-pictures/10%20-%20upload%20profile%20with%20id%20doesnt%20exist.png)
 
 **Viewing profile details**
+* GET requests with `user ID` to get the user details & pre-signed url for the profile image.
+* Then, using the url and making the GET request to get the image.
+* Note: the lambda will not send back the pre-signed url for the image if the user has not uploaded a profile image. In every response of the lambda there is a kind of flag that if its value is True then the pre-signed url is also attached, otherwise it is not attached, and the image will not be displayed in the interface.
 
+![](./readme-pictures/11%20-%20get%20profile%20details.jpg)
+
+For example:
+
+![](./readme-pictures/12%20-%20view%20profile.png)
+
+Using Alice `User ID`
+![](./readme-pictures/13%20-%20view%20profile%20of%20alice.png)
+
+After clicking, two things happen. The browser will receive a pre-signed url (with details to represent) to download the image, then doenload it. the next picture contains both two actions together:
+![](./readme-pictures/14%20-%20view%20profile%20of%20alice.png)
+
+Of course, cases where the user ID does not exist will be handled as in the previous cases, so from now on I will not mention this case.
+
+**Deleting a user**
