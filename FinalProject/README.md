@@ -60,7 +60,7 @@ It is described here according to the following parts:
 **Part B - Special Features**
 * Subscribers:
     * Subscribe to another users
-    * Distributing a message to my subscribers
+    * Message to my subscribers
 * Tagging posts:
     * Uploading a post to a public wall
     * Viewing all posts on the public wall
@@ -160,7 +160,42 @@ Before detailing this part, I will create some new users. A summary of their imp
 | Bob        | pemit49373@hapied.com   | 65d79d51-18a0-44f9-a980-49fa5cdf2a38 |
 | Eve        | doseni9596@avashost.com | c0971ac2-e0d6-43dc-bfe1-43b980dc8bbc |
 
+Let's start!
+
+**Subscribers: subscribe to user**</br>
+A service that a user can subscribe to another user.</br>
+There is 2 lambdas here:
+* GET requests with `User ID` to get list of other users. the lambda for this return all other users, for each one there is a name and email. this lambda sits on user system API
+* POST request with `User ID` of the user who subscribes, and the `Mail Address` of the user who subscribes to him to lambda for subscribe in subscribes system API.
+* Lambda for subscribe does the following:
+    * Check if both users are exist
+    * If yes, find the `SNS topic ARN` of of the user who subscribes to him
+    * find the `Mail` of the user who subscribes
+    * subscribe the user `Mail` to the `SNS topic` by its `ARN`
+* After that, the user receives a registration confirmation email to his email box.
+* Note: when a new user registers in the system, an SNS topic is created for him, and his ARN is saved in DynamoDB `topics` table with the `User ID`.
+
+![](./readme-pictures/16%20-%20subscribe%20diagram.jpg)
 
 
-**Subscribers: subscribe to user**
+For example, let's make Alice a subscriber of Eve:
 
+![](./readme-pictures/17%20-%20subscribe.png)
+
+Using Alice `User ID`
+![](./readme-pictures/18%20-%20subscribe.png)
+
+After clicking, all users other than Alice will appear.
+![](./readme-pictures/19%20-%20subscribe.png)
+
+After clicking on Eve, a success message will appear asking to look in Alice's mailbox. After we click OK, Eve will disappear from the list of options.
+![](./readme-pictures/20%20-%20subscribe.png)
+
+Let's take a look in Alice's mailbox:
+![](./readme-pictures/21%20-%20subscribe%20email%20notification.png)
+![](./readme-pictures/22%20-%20subscribe%20email%20notification.png)
+![](./readme-pictures/23%20-%20subscribe%20email%20notification.png)
+
+Now, when Eve sends a message to all her subscribers, Alice will also receive Eve's message to her own email. And this is done in the following example.
+
+**Subscribers: Message to my subscribers**
