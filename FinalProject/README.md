@@ -251,3 +251,27 @@ Using Bob `User ID`
 In the next example, we will return to Alice and see how she views the posts.
 
 **Viewing all posts on the public wall, with image tags**</br>
+* GET requests for all posts
+* Lambda does the following:
+    * Checks if user is exist
+    * If yes, creates a list of all posts.
+        * Each post contains a pre-sign url for its image, the publisher's name and other post details. In addition, if there is an image in the post (there is a flag variable that indicates if there is or not) then tags obtained from the **amazon recognition** service are attached to it.
+    * Returns the list of posts.
+* The browser needs to represent all the post was returned.
+* Of course the browser for each post will go to S3 with the pre-sign url (if any) to display the image.
+
+![](./readme-pictures/34%20-%20get%20all%20posts%20diagram.jpg)
+
+For example, let's see how Alice views posts:
+![](./readme-pictures/35%20-%20view%20all%20posts.png)
+
+Using Alice `User ID`
+![](./readme-pictures/36%20-%20view%20all%20posts.png)
+
+After the click
+![](./readme-pictures/37%20-%20view%20all%20posts.png)
+
+And now Alice is viewing the only post that has gone up so far. To make it more interesting, we will upload more posts from more users (including Alice). Now, let's go back and watch them all:
+
+
+
