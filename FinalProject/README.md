@@ -1,5 +1,6 @@
 # Final Project
 Final project in a cloud computing course.
+The task is to build an infrastructure for a social network, and use interesting aws services.
 
 ## Instructions
 ### Part A - Build a basic user system
