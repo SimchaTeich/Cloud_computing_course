@@ -58,12 +58,12 @@ It is described here according to the following parts:
 * Deleting a user
 
 **Part B - Special Features**
-* Subscribers:
+* Subscribe:
     * Subscribe to another users
     * Message to my subscribers
-* Tagging posts:
+* Tagging images:
     * Uploading a post to a public wall
-    * Viewing all posts on the public wall
+    * Viewing all posts on the public wall, with image tags
 
 ### Part A - User system
 ---
@@ -163,9 +163,10 @@ Before detailing this part, I will create some new users. A summary of their imp
 Let's start!
 
 ---
-**Subscribers: subscribe to user**</br>
-A service that a user can subscribe to another user.</br>
-There is 2 lambdas here:
+**Subscribe:**</br>
+A service that a user can subscribe to another user.
+
+**Subscribe to user**
 * GET requests with `User ID` to get list of other users. the lambda for this return all other users, for each one there is a name and email. this lambda sits on user system API
 * POST request with `User ID` of the user who subscribes, and the `Mail Address` of the user who subscribes to him to lambda for subscribe in subscribes system API.
 * Lambda for subscribe does the following:
@@ -199,7 +200,7 @@ Let's take a look in Alice's mailbox:
 
 Now, when Eve sends a message to all her subscribers, Alice will also receive Eve's message to her own email. And this is done in the following example.
 
-**Subscribers: Message to my subscribers**
+**Message to my subscribers**
 * POST requests which contains a user ID and the content of the message to be sent
 * Lambda for insert to SQS does the following:
     * Checks user is exist
@@ -224,4 +225,29 @@ We can see that the email has also been added who sent it. This is part of the w
 ![](./readme-pictures/29%20-%20alice%20got%20some%20new%20mail%20from%20eve.png)
 
 ---
-**Tagging posts: Uploading a post to a public wall**</br>
+**Tagging images:**</br>
+Service for uploading posts and tagging the photos on them.
+
+**Uploading a post to a public wall**
+* POST request to upload a new post, and get back a pre-signed url to upload the image as well
+* PUT request to upload the image with the received url
+* Lambda does the follwing:
+    * Checks user is exist
+    * If yes, create new `Post ID`
+    * Inserts post details into `Posts` table in **DynamoDB**
+    * Creates an empty folder in the Posts bucket in **S3**. The name of the folder is the `Post ID`
+    * Create pre-signed url for image uploading and return it.
+
+![](./readme-pictures/30%20-%20upload%20post%20diagram.jpg)
+
+For example, let's see how Bob uploads a post:
+
+![](./readme-pictures/31%20-%20upload%20post.png)
+
+Using Bob `User ID`
+![](./readme-pictures/32%20-%20upload%20post.png)
+![](./readme-pictures/33%20-%20upload%20post.png)
+
+In the next example, we will return to Alice and see how she views the posts.
+
+**Viewing all posts on the public wall, with image tags**</br>
