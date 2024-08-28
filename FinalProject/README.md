@@ -199,3 +199,27 @@ Let's take a look in Alice's mailbox:
 Now, when Eve sends a message to all her subscribers, Alice will also receive Eve's message to her own email. And this is done in the following example.
 
 **Subscribers: Message to my subscribers**
+* POST requests which contains a user ID and the content of the message to be sent
+* Lambda for insert to SQS does the following:
+    * Checks user is exist
+    * If yes, find `publisher username` and push it with the `entire message` and `user ID` to the SQS
+* Lambda for publish message form the SQS does the following:
+    * For each msg from the SQS (It can be more than one to handle at some times) finds the SNS topic ARN of the publisher, and publish the message.
+
+![](./readme-pictures/24%20-%20send%20msg%20to%20subscribers.jpg)
+
+For example, let's see how Eve sends a message to all her subscribers, and then we'll take a look at Alice's email box (who subscribed) and see what happened:
+
+![](./readme-pictures/25%20-%20send%20msg%20to%20my%20subscribers.png)
+
+Using Eve `User ID`
+![](./readme-pictures/26%20-%20send%20msg%20to%20my%20subscribers%20from%20eve.png)
+![](./readme-pictures/27%20-%20send%20msg%20to%20my%20subscribers%20from%20eve.png)
+
+Let's take a look again in Alice's mailbox:
+![](./readme-pictures/28%20-%20alice%20got%20some%20new%20mail.png)
+
+We can see that the email has also been added who sent it. This is part of the work of the lambda that inserts the message into SQS.
+![](./readme-pictures/29%20-%20alice%20got%20some%20new%20mail%20from%20eve.png)
+
+
