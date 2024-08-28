@@ -162,6 +162,7 @@ Before detailing this part, I will create some new users. A summary of their imp
 
 Let's start!
 
+---
 **Subscribers: subscribe to user**</br>
 A service that a user can subscribe to another user.</br>
 There is 2 lambdas here:
@@ -222,4 +223,5 @@ Let's take a look again in Alice's mailbox:
 We can see that the email has also been added who sent it. This is part of the work of the lambda that inserts the message into SQS.
 ![](./readme-pictures/29%20-%20alice%20got%20some%20new%20mail%20from%20eve.png)
 
-
+---
+**Tagging posts: Uploading a post to a public wall**</br>
