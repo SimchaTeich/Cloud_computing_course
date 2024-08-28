@@ -206,7 +206,7 @@ Now, when Eve sends a message to all her subscribers, Alice will also receive Ev
 * Lambda for publish message form the SQS does the following:
     * For each msg from the SQS (It can be more than one to handle at some times) finds the SNS topic ARN of the publisher, and publish the message.
 
-![](./readme-pictures/24%20-%20send%20msg%20to%20subscribers.jpg)
+![](./readme-pictures/24%20-%20send%20msg%20to%20subscribers%20diagram.jpg)
 
 For example, let's see how Eve sends a message to all her subscribers, and then we'll take a look at Alice's email box (who subscribed) and see what happened:
 
