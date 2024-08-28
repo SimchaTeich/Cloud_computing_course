@@ -272,6 +272,5 @@ After clicking, you can see that there are tags on the post. These are actually 
 ![](./readme-pictures/37%20-%20view%20all%20posts.png)
 
 To make it more interesting, we will upload more posts from more users (including Alice). Now, let's go back and watch them all:
-
-
+![](./readme-pictures/38%20-%20view%20all%20posts.png)
 
