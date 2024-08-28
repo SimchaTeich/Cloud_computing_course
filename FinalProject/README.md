@@ -268,10 +268,10 @@ For example, let's see how Alice views posts:
 Using Alice `User ID`
 ![](./readme-pictures/36%20-%20view%20all%20posts.png)
 
-After the click
+After clicking, you can see that there are tags on the post. These are actually the labels that came back from amazon recognition that worked on the image.
 ![](./readme-pictures/37%20-%20view%20all%20posts.png)
 
-And now Alice is viewing the only post that has gone up so far. To make it more interesting, we will upload more posts from more users (including Alice). Now, let's go back and watch them all:
+To make it more interesting, we will upload more posts from more users (including Alice). Now, let's go back and watch them all:
 
 
 
