@@ -274,3 +274,22 @@ After clicking, you can see that there are tags on the post. These are actually 
 To make it more interesting, we will upload more posts from more users (including Alice). Now, let's go back and watch them all:
 ![](./readme-pictures/38%20-%20view%20all%20posts.png)
 
+The last thing left to show is user deletion. We deleted Alice, and her posts don't seem to appear anymore either. Of course we will use the ID of a user other than Alice after the deletion, to view the posts:
+
+![](./readme-pictures/39%20-%20delete%20user.png)
+
+Using Alice `User ID`
+![](./readme-pictures/40%20-%20delete%20alice.png)
+![](./readme-pictures/41%20-%20delete%20alice.png)
+
+If we try to delete one more time, we will get an error
+![](./readme-pictures/42%20-%20delete%20alice.png)
+
+We will now return to the public wall, and it appears that Alice's posts are no longer displayed there.
+
+Using Bob `User ID`
+![](./readme-pictures/43%20-%20view%20all%20posts.png)
+
+---
+And now, my final project in the cloud computing course is finished.
+bye bye!
