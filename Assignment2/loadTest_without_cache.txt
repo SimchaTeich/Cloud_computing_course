@@ -1,0 +1,200 @@
+Creating restaurant: {"name":"Restaurant_0","cuisine":"French","region":"North"}
+Creating restaurant: {"name":"Restaurant_1","cuisine":"Moroccan","region":"South"}
+Creating restaurant: {"name":"Restaurant_2","cuisine":"English","region":"East"}
+Creating restaurant: {"name":"Restaurant_3","cuisine":"Belgian","region":"West"}
+Creating restaurant: {"name":"Restaurant_4","cuisine":"Israeli","region":"North"}
+Creating restaurant: {"name":"Restaurant_5","cuisine":"Greek","region":"South"}
+Creating restaurant: {"name":"Restaurant_6","cuisine":"American","region":"East"}
+Creating restaurant: {"name":"Restaurant_7","cuisine":"French","region":"West"}
+Creating restaurant: {"name":"Restaurant_8","cuisine":"Moroccan","region":"North"}
+Creating restaurant: {"name":"Restaurant_9","cuisine":"English","region":"South"}
+Creating restaurant: {"name":"Restaurant_10","cuisine":"Belgian","region":"East"}
+Creating restaurant: {"name":"Restaurant_11","cuisine":"Israeli","region":"West"}
+Creating restaurant: {"name":"Restaurant_12","cuisine":"Greek","region":"North"}
+Creating restaurant: {"name":"Restaurant_13","cuisine":"American","region":"South"}
+Creating restaurant: {"name":"Restaurant_14","cuisine":"French","region":"East"}
+Creating restaurant: {"name":"Restaurant_15","cuisine":"Moroccan","region":"West"}
+Creating restaurant: {"name":"Restaurant_16","cuisine":"English","region":"North"}
+Creating restaurant: {"name":"Restaurant_17","cuisine":"Belgian","region":"South"}
+Creating restaurant: {"name":"Restaurant_18","cuisine":"Israeli","region":"East"}
+Creating restaurant: {"name":"Restaurant_19","cuisine":"Greek","region":"West"}
+Creating restaurant: {"name":"Restaurant_20","cuisine":"American","region":"North"}
+Creating restaurant: {"name":"Restaurant_21","cuisine":"French","region":"South"}
+Creating restaurant: {"name":"Restaurant_22","cuisine":"Moroccan","region":"East"}
+Creating restaurant: {"name":"Restaurant_23","cuisine":"English","region":"West"}
+Creating restaurant: {"name":"Restaurant_24","cuisine":"Belgian","region":"North"}
+Creating restaurant: {"name":"Restaurant_25","cuisine":"Israeli","region":"South"}
+Creating restaurant: {"name":"Restaurant_26","cuisine":"Greek","region":"East"}
+Creating restaurant: {"name":"Restaurant_27","cuisine":"American","region":"West"}
+Creating restaurant: {"name":"Restaurant_28","cuisine":"French","region":"North"}
+Creating restaurant: {"name":"Restaurant_29","cuisine":"Moroccan","region":"South"}
+Creating restaurant: {"name":"Restaurant_30","cuisine":"English","region":"East"}
+Creating restaurant: {"name":"Restaurant_31","cuisine":"Belgian","region":"West"}
+Creating restaurant: {"name":"Restaurant_32","cuisine":"Israeli","region":"North"}
+Creating restaurant: {"name":"Restaurant_33","cuisine":"Greek","region":"South"}
+Creating restaurant: {"name":"Restaurant_34","cuisine":"American","region":"East"}
+Creating restaurant: {"name":"Restaurant_35","cuisine":"French","region":"West"}
+Creating restaurant: {"name":"Restaurant_36","cuisine":"Moroccan","region":"North"}
+Creating restaurant: {"name":"Restaurant_37","cuisine":"English","region":"South"}
+Creating restaurant: {"name":"Restaurant_38","cuisine":"Belgian","region":"East"}
+Creating restaurant: {"name":"Restaurant_39","cuisine":"Israeli","region":"West"}
+Creating restaurant: {"name":"Restaurant_40","cuisine":"Greek","region":"North"}
+Creating restaurant: {"name":"Restaurant_41","cuisine":"American","region":"South"}
+Creating restaurant: {"name":"Restaurant_42","cuisine":"French","region":"East"}
+Creating restaurant: {"name":"Restaurant_43","cuisine":"Moroccan","region":"West"}
+Creating restaurant: {"name":"Restaurant_44","cuisine":"English","region":"North"}
+Creating restaurant: {"name":"Restaurant_45","cuisine":"Belgian","region":"South"}
+Creating restaurant: {"name":"Restaurant_46","cuisine":"Israeli","region":"East"}
+Creating restaurant: {"name":"Restaurant_47","cuisine":"Greek","region":"West"}
+Creating restaurant: {"name":"Restaurant_48","cuisine":"American","region":"North"}
+Creating restaurant: {"name":"Restaurant_49","cuisine":"French","region":"South"}
+Creating restaurant: {"name":"Restaurant_50","cuisine":"Moroccan","region":"East"}
+Creating restaurant: {"name":"Restaurant_51","cuisine":"English","region":"West"}
+Creating restaurant: {"name":"Restaurant_52","cuisine":"Belgian","region":"North"}
+Creating restaurant: {"name":"Restaurant_53","cuisine":"Israeli","region":"South"}
+Creating restaurant: {"name":"Restaurant_54","cuisine":"Greek","region":"East"}
+Creating restaurant: {"name":"Restaurant_55","cuisine":"American","region":"West"}
+Creating restaurant: {"name":"Restaurant_56","cuisine":"French","region":"North"}
+Creating restaurant: {"name":"Restaurant_57","cuisine":"Moroccan","region":"South"}
+Creating restaurant: {"name":"Restaurant_58","cuisine":"English","region":"East"}
+Creating restaurant: {"name":"Restaurant_59","cuisine":"Belgian","region":"West"}
+Creating restaurant: {"name":"Restaurant_60","cuisine":"Israeli","region":"North"}
+Creating restaurant: {"name":"Restaurant_61","cuisine":"Greek","region":"South"}
+Creating restaurant: {"name":"Restaurant_62","cuisine":"American","region":"East"}
+Creating restaurant: {"name":"Restaurant_63","cuisine":"French","region":"West"}
+Creating restaurant: {"name":"Restaurant_64","cuisine":"Moroccan","region":"North"}
+Creating restaurant: {"name":"Restaurant_65","cuisine":"English","region":"South"}
+Creating restaurant: {"name":"Restaurant_66","cuisine":"Belgian","region":"East"}
+Creating restaurant: {"name":"Restaurant_67","cuisine":"Israeli","region":"West"}
+Creating restaurant: {"name":"Restaurant_68","cuisine":"Greek","region":"North"}
+Creating restaurant: {"name":"Restaurant_69","cuisine":"American","region":"South"}
+Creating restaurant: {"name":"Restaurant_70","cuisine":"French","region":"East"}
+Creating restaurant: {"name":"Restaurant_71","cuisine":"Moroccan","region":"West"}
+Creating restaurant: {"name":"Restaurant_72","cuisine":"English","region":"North"}
+Creating restaurant: {"name":"Restaurant_73","cuisine":"Belgian","region":"South"}
+Creating restaurant: {"name":"Restaurant_74","cuisine":"Israeli","region":"East"}
+Creating restaurant: {"name":"Restaurant_75","cuisine":"Greek","region":"West"}
+Creating restaurant: {"name":"Restaurant_76","cuisine":"American","region":"North"}
+Creating restaurant: {"name":"Restaurant_77","cuisine":"French","region":"South"}
+Creating restaurant: {"name":"Restaurant_78","cuisine":"Moroccan","region":"East"}
+Creating restaurant: {"name":"Restaurant_79","cuisine":"English","region":"West"}
+Creating restaurant: {"name":"Restaurant_80","cuisine":"Belgian","region":"North"}
+Creating restaurant: {"name":"Restaurant_81","cuisine":"Israeli","region":"South"}
+Creating restaurant: {"name":"Restaurant_82","cuisine":"Greek","region":"East"}
+Creating restaurant: {"name":"Restaurant_83","cuisine":"American","region":"West"}
+Creating restaurant: {"name":"Restaurant_84","cuisine":"French","region":"North"}
+Creating restaurant: {"name":"Restaurant_85","cuisine":"Moroccan","region":"South"}
+Creating restaurant: {"name":"Restaurant_86","cuisine":"English","region":"East"}
+Creating restaurant: {"name":"Restaurant_87","cuisine":"Belgian","region":"West"}
+Creating restaurant: {"name":"Restaurant_88","cuisine":"Israeli","region":"North"}
+Creating restaurant: {"name":"Restaurant_89","cuisine":"Greek","region":"South"}
+Creating restaurant: {"name":"Restaurant_90","cuisine":"American","region":"East"}
+Creating restaurant: {"name":"Restaurant_91","cuisine":"French","region":"West"}
+Creating restaurant: {"name":"Restaurant_92","cuisine":"Moroccan","region":"North"}
+Creating restaurant: {"name":"Restaurant_93","cuisine":"English","region":"South"}
+Creating restaurant: {"name":"Restaurant_94","cuisine":"Belgian","region":"East"}
+Creating restaurant: {"name":"Restaurant_95","cuisine":"Israeli","region":"West"}
+Creating restaurant: {"name":"Restaurant_96","cuisine":"Greek","region":"North"}
+Creating restaurant: {"name":"Restaurant_97","cuisine":"American","region":"South"}
+Creating restaurant: {"name":"Restaurant_98","cuisine":"French","region":"East"}
+Creating restaurant: {"name":"Restaurant_99","cuisine":"Moroccan","region":"West"}
+Response status: 200, Time Taken: 659 ms
+Response status: 200, Time Taken: 658 ms
+Response status: 200, Time Taken: 659 ms
+Response status: 200, Time Taken: 661 ms
+Response status: 200, Time Taken: 660 ms
+Response status: 200, Time Taken: 659 ms
+Response status: 200, Time Taken: 659 ms
+Response status: 200, Time Taken: 660 ms
+Response status: 200, Time Taken: 662 ms
+Response status: 200, Time Taken: 661 ms
+Response status: 200, Time Taken: 661 ms
+Response status: 200, Time Taken: 665 ms
+Response status: 200, Time Taken: 668 ms
+Response status: 200, Time Taken: 669 ms
+Response status: 200, Time Taken: 670 ms
+Response status: 200, Time Taken: 678 ms
+Response status: 200, Time Taken: 680 ms
+Response status: 200, Time Taken: 680 ms
+Response status: 200, Time Taken: 681 ms
+Response status: 200, Time Taken: 680 ms
+Response status: 200, Time Taken: 681 ms
+Response status: 200, Time Taken: 682 ms
+Response status: 200, Time Taken: 685 ms
+Response status: 200, Time Taken: 684 ms
+Response status: 200, Time Taken: 684 ms
+Response status: 200, Time Taken: 687 ms
+Response status: 200, Time Taken: 687 ms
+Response status: 200, Time Taken: 695 ms
+Response status: 200, Time Taken: 694 ms
+Response status: 200, Time Taken: 695 ms
+Response status: 200, Time Taken: 694 ms
+Response status: 200, Time Taken: 694 ms
+Response status: 200, Time Taken: 697 ms
+Response status: 200, Time Taken: 696 ms
+Response status: 200, Time Taken: 699 ms
+Response status: 200, Time Taken: 697 ms
+Response status: 200, Time Taken: 699 ms
+Response status: 200, Time Taken: 697 ms
+Response status: 200, Time Taken: 696 ms
+Response status: 200, Time Taken: 699 ms
+Response status: 200, Time Taken: 699 ms
+Response status: 200, Time Taken: 698 ms
+Response status: 200, Time Taken: 713 ms
+Response status: 200, Time Taken: 711 ms
+Response status: 200, Time Taken: 713 ms
+Response status: 200, Time Taken: 712 ms
+Response status: 200, Time Taken: 709 ms
+Response status: 200, Time Taken: 711 ms
+Response status: 200, Time Taken: 713 ms
+Response status: 200, Time Taken: 716 ms
+Response status: 200, Time Taken: 715 ms
+Response status: 200, Time Taken: 712 ms
+Response status: 200, Time Taken: 715 ms
+Response status: 200, Time Taken: 716 ms
+Response status: 200, Time Taken: 706 ms
+Response status: 200, Time Taken: 715 ms
+Response status: 200, Time Taken: 706 ms
+Response status: 200, Time Taken: 707 ms
+Response status: 200, Time Taken: 706 ms
+Response status: 200, Time Taken: 707 ms
+Response status: 200, Time Taken: 706 ms
+Response status: 200, Time Taken: 710 ms
+Response status: 200, Time Taken: 708 ms
+Response status: 200, Time Taken: 721 ms
+Response status: 200, Time Taken: 722 ms
+Response status: 200, Time Taken: 721 ms
+Response status: 200, Time Taken: 722 ms
+Response status: 200, Time Taken: 723 ms
+Response status: 200, Time Taken: 721 ms
+Response status: 200, Time Taken: 723 ms
+Response status: 200, Time Taken: 722 ms
+Response status: 200, Time Taken: 724 ms
+Response status: 200, Time Taken: 723 ms
+Response status: 200, Time Taken: 724 ms
+Response status: 200, Time Taken: 726 ms
+Response status: 200, Time Taken: 726 ms
+Response status: 200, Time Taken: 726 ms
+Response status: 200, Time Taken: 727 ms
+Response status: 200, Time Taken: 727 ms
+Response status: 200, Time Taken: 728 ms
+Response status: 200, Time Taken: 732 ms
+Response status: 200, Time Taken: 733 ms
+Response status: 200, Time Taken: 733 ms
+Response status: 200, Time Taken: 733 ms
+Response status: 200, Time Taken: 734 ms
+Response status: 200, Time Taken: 735 ms
+Response status: 200, Time Taken: 746 ms
+Response status: 200, Time Taken: 748 ms
+Response status: 200, Time Taken: 747 ms
+Response status: 200, Time Taken: 746 ms
+Response status: 200, Time Taken: 748 ms
+Response status: 200, Time Taken: 752 ms
+Response status: 200, Time Taken: 750 ms
+Response status: 200, Time Taken: 750 ms
+Response status: 200, Time Taken: 751 ms
+Response status: 200, Time Taken: 751 ms
+Response status: 200, Time Taken: 750 ms
+Response status: 200, Time Taken: 751 ms
+Response status: 200, Time Taken: 753 ms
+Response status: 200, Time Taken: 754 ms
